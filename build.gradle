@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group = 'net.java.games.input.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/net.java.jutils/jutils
+    implementation 'net.java.jutils:jutils:1.0.0'
+    implementation 'net.java.jinput:jinput:2.0.10'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
