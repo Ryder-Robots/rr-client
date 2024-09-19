@@ -2,6 +2,8 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
+import org.ryderrobot.listeners.MenuControllerListener;
 
 public class MainMenuScreen extends Stage implements Screen {
     private final Viewport viewPort;
@@ -80,7 +83,25 @@ public class MainMenuScreen extends Stage implements Screen {
             mainTable.row();
             buttons[i] = button;
         }
-
+        Controller controller = Controllers.getCurrent();
+        controller.addListener(new MenuControllerListener(buttons) {
+                @Override
+                public boolean buttonDownEvent(Controller controller, int i) {
+                    if (i == Constants.CTRL_X_BUTTON) {
+                        switch (getCurrButtonIdx()) {
+                            case 0:
+                                screensProcessor.setCurrScreen(1);
+                                break;
+                            case 6:
+                                Gdx.app.exit();
+                                break;
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            }
+        );
         setActionsRequestRendering(false);
         addActor(mainTable);
     }

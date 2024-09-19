@@ -12,5 +12,6 @@ public class Constants {
     // Controller constants
     public static final int CTRL_SCROLL_UP = 12;
     public static final int CTRL_SCROLL_DOWN = 11;
+    public static final int CTRL_SCROLL_LEFT = 13;
     public static final int CTRL_X_BUTTON = 0;
 }

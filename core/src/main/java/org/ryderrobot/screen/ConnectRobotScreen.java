@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.ryderrobot.Constants;
 
 public class ConnectRobotScreen extends Stage implements Screen  {
     private final Viewport viewPort;
@@ -33,6 +34,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     public void render(float v) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         getBatch().begin();
+        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         getBatch().end();
 
         camera.update();
