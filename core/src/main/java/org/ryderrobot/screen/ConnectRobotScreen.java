@@ -2,32 +2,89 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
+import org.ryderrobot.listeners.MenuControllerListener;
+
+import static org.ryderrobot.Constants.ROW_HEIGHT;
+import static org.ryderrobot.Constants.ROW_WIDTH;
 
 public class ConnectRobotScreen extends Stage implements Screen  {
     private final Viewport viewPort;
     private final Texture backgroundTexture;
     private final Camera camera;
     private final Skin skin;
+    private final ScreensProcessor screensProcessor;
 
-    public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin) {
+    public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin, ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
         this.camera = camera;
         this.skin = skin;
+        this.screensProcessor = screensProcessor;
     }
 
     @Override
     public void show() {
+        TextField addrTextField = new TextField("", skin);
+        addrTextField.setSize(ROW_WIDTH * 2, ROW_HEIGHT);
+
+        TextButton connect = new TextButton("Connect", skin);
+        connect.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("stop here");
+            }
+        });
+
+        TextButton back = new TextButton("Back", skin);
+        back.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screensProcessor.setCurrScreen(0);
+            }
+        });
+
+        Table mainTable = new Table();
+        mainTable.setFillParent(true);
+        mainTable.center();
+        mainTable.setWidth(ROW_WIDTH * 3);
+        mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT);
+        mainTable.add(addrTextField).width(ROW_WIDTH).height(ROW_HEIGHT).left();
+
+
+        Table buttonTable = new Table();
+        buttonTable.setFillParent(true);
+        buttonTable.setY(-100);
+        buttonTable.add(connect).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
+
+        addActor(mainTable);
+        addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
+
+        Controller controller = Controllers.getCurrent();
+        controller.addListener(new MenuControllerListener(null) {
+            @Override
+            public boolean buttonDownEvent(Controller controller, int i) {
+                if (i == Constants.CTRL_SCROLL_LEFT) {
+                    screensProcessor.setCurrScreen(0);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

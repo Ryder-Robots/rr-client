@@ -102,7 +102,7 @@ public class MainMenuScreen extends Stage implements Screen {
                 }
             }
         );
-        setActionsRequestRendering(false);
+        setActionsRequestRendering(true);
         addActor(mainTable);
     }
 
