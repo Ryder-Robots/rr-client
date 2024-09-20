@@ -1,5 +1,9 @@
 package org.ryderrobot.screen;
 
+/**
+ * Screen to connect to drone.
+ */
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.controllers.Controller;
@@ -13,9 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
 import org.ryderrobot.listeners.MenuControllerListener;
 
+import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
 import static org.ryderrobot.Constants.ROW_WIDTH;
 
@@ -26,6 +32,15 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
 
+    /**
+     * Class constructor
+     *
+     * @param viewport common view port.
+     * @param backgroundTexture common background
+     * @param camera non connected camera
+     * @param skin program layout
+     * @param screensProcessor connect to other screens.
+     */
     public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin, ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
@@ -35,20 +50,26 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         this.screensProcessor = screensProcessor;
     }
 
+    /**
+     * initialize and draw the screen, when menu first called, (set the stage.)
+     */
     @Override
     public void show() {
-        TextField addrTextField = new TextField("", skin);
+        final TextField addrTextField = new TextField("", skin);
         addrTextField.setSize(ROW_WIDTH * 2, ROW_HEIGHT);
+        final TextField portTxtField = new TextField("", skin);
 
-        TextButton connect = new TextButton("Connect", skin);
+        final TextButton connect = new TextButton("Connect", skin);
         connect.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                System.out.println("stop here");
+                if (Strings.isNotEmpty(addrTextField.getText())) {
+                    System.out.println("stop here" + addrTextField.getText());
+                }
             }
         });
 
-        TextButton back = new TextButton("Back", skin);
+        final TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -56,15 +77,15 @@ public class ConnectRobotScreen extends Stage implements Screen  {
             }
         });
 
-        Table mainTable = new Table();
+        final Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
-        mainTable.setWidth(ROW_WIDTH * 3);
-        mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT);
+        mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add(addrTextField).width(ROW_WIDTH).height(ROW_HEIGHT).left();
+        mainTable.add(portTxtField).height(ROW_HEIGHT).width(round(ROW_WIDTH / 3)).pad(10);
 
 
-        Table buttonTable = new Table();
+        final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.setY(-100);
         buttonTable.add(connect).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
@@ -74,12 +95,12 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
 
-        Controller controller = Controllers.getCurrent();
+        final Controller controller = Controllers.getCurrent();
         controller.addListener(new MenuControllerListener(null) {
             @Override
             public boolean buttonDownEvent(Controller controller, int i) {
                 if (i == Constants.CTRL_SCROLL_LEFT) {
-                    screensProcessor.setCurrScreen(0);
+                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
                     return true;
                 }
                 return false;
@@ -87,6 +108,11 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         });
     }
 
+    /**
+     * called each time the screen is rendered.
+     *
+     * @param v ignored only included for interface compliance.
+     */
     @Override
     public void render(float v) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
@@ -99,6 +125,12 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         draw();
     }
 
+    /**
+     * Resizes the screen to dimensions X, and Y
+     *
+     * @param width viewable width
+     * @param height viewable height
+     */
     @Override
     public void resize(int width, int height) {
         getBatch().begin();

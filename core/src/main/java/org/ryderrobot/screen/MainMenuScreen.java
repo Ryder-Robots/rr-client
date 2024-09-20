@@ -18,6 +18,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
 import org.ryderrobot.listeners.MenuControllerListener;
 
+import static java.lang.Math.round;
+import static org.ryderrobot.Constants.ROW_HEIGHT;
+import static org.ryderrobot.Constants.ROW_WIDTH;
+
 public class MainMenuScreen extends Stage implements Screen {
     private final Viewport viewPort;
     private final Texture backgroundTexture;
@@ -79,7 +83,7 @@ public class MainMenuScreen extends Stage implements Screen {
             TextButton button = new TextButton(menuItems[i], skin);
             button.addListener(menuItemsListener[i]);
 
-            mainTable.add(button);
+            mainTable.add(button).width(round(ROW_WIDTH * 1.5)).height(ROW_HEIGHT).pad(10);
             mainTable.row();
             buttons[i] = button;
         }
@@ -90,7 +94,7 @@ public class MainMenuScreen extends Stage implements Screen {
                     if (i == Constants.CTRL_X_BUTTON) {
                         switch (getCurrButtonIdx()) {
                             case 0:
-                                screensProcessor.setCurrScreen(1);
+                                screensProcessor.setCurrScreen(ScreensProcessor.SCR_CONNECT);
                                 break;
                             case 6:
                                 Gdx.app.exit();

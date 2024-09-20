@@ -1,0 +1,7 @@
+background.png
+libgdx.png
+x2/font-small.fnt
+x2/default.fnt
+x2/uiskin.atlas
+x2/uiskin.png
+x2/uiskin.json
