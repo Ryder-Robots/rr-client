@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
+import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.listeners.MenuControllerListener;
 
 import static java.lang.Math.round;
@@ -31,6 +32,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
+    private SocketClient socketClient;
 
     /**
      * Class constructor
@@ -64,7 +66,10 @@ public class ConnectRobotScreen extends Stage implements Screen  {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (Strings.isNotEmpty(addrTextField.getText())) {
-                    System.out.println("stop here" + addrTextField.getText());
+                    socketClient = new SocketClient(
+                        addrTextField.getText(),
+                        Integer.parseInt(portTxtField.getText()),
+                        "connection");
                 }
             }
         });
@@ -82,7 +87,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         mainTable.center();
         mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add(addrTextField).width(ROW_WIDTH).height(ROW_HEIGHT).left();
-        mainTable.add(portTxtField).height(ROW_HEIGHT).width(round(ROW_WIDTH / 3)).pad(10);
+        mainTable.add(portTxtField).height(ROW_HEIGHT).width(round((float) ROW_WIDTH / 3)).pad(10);
 
 
         final Table buttonTable = new Table();

@@ -2,6 +2,8 @@
 eclipse.project.name = appName + '-core'
 
 dependencies {
+  implementation 'org.codehaus.httpcache4j.uribuilder:uribuilder:2.0.0'
+
   api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   api "com.crashinvaders.lml:gdx-autumn-mvc:$lmlVersion"
