@@ -17,7 +17,7 @@ import java.net.URI;
  * maintained.
  */
 public class SocketClient {
-    private static final String SCHEME = "http";
+    private static final String SCHEME = "ws";
     private  WebSocket socket;
 
     private void init(String url) {
