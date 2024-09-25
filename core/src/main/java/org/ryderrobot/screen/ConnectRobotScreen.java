@@ -1,6 +1,6 @@
 package org.ryderrobot.screen;
 
-/**
+/*
  * Screen to connect to drone.
  */
 
@@ -26,6 +26,9 @@ import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
 import static org.ryderrobot.Constants.ROW_WIDTH;
 
+/**
+ * connect to drone.
+ */
 public class ConnectRobotScreen extends Stage implements Screen  {
     private final Viewport viewPort;
     private final Texture backgroundTexture;
@@ -58,8 +61,10 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     @Override
     public void show() {
         final TextField addrTextField = new TextField("", skin);
-        addrTextField.setSize(ROW_WIDTH * 2, ROW_HEIGHT);
         final TextField portTxtField = new TextField("", skin);
+        final TextField clientId = new TextField("", skin);
+        final TextField atHash = new TextField("", skin);
+
 
         final TextButton connect = new TextButton("Connect", skin);
         connect.addListener(new ClickListener() {
@@ -69,7 +74,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                     socketClient = new SocketClient(
                         addrTextField.getText(),
                         Integer.parseInt(portTxtField.getText()),
-                        "connection");
+                        "connection", clientId.getText(), atHash.getText());
                 }
             }
         });
@@ -88,11 +93,16 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add(addrTextField).width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.add(portTxtField).height(ROW_HEIGHT).width(round((float) ROW_WIDTH / 3)).pad(10);
-
+        mainTable.row();
+        mainTable.add(new Label("Client Id: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(clientId).width(ROW_WIDTH).height(ROW_HEIGHT).left();
+        mainTable.row();
+        mainTable.add(new Label("At Hash: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(atHash).width(ROW_WIDTH).height(ROW_HEIGHT).left();
 
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
-        buttonTable.setY(-100);
+        buttonTable.setY(-200);
         buttonTable.add(connect).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
 

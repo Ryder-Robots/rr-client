@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 public class Constants {
+    // applicationName and version be updated on each release.
+    public static final String applicationName = "rr-client";
+    public static final String applicationVersion = "0.0.1";
+
     public static final float WORLD_HEIGHT = 1024;
     public static final float WORLD_WIDTH = 1366;
     public static final FileHandle UI_SKIN_ATLAS = Gdx.files.internal("x2/uiskin.atlas");
