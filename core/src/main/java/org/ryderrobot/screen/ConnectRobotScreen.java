@@ -74,7 +74,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                     socketClient = new SocketClient(
                         addrTextField.getText(),
                         Integer.parseInt(portTxtField.getText()),
-                        "connection", clientId.getText(), atHash.getText());
+                        "", clientId.getText(), atHash.getText());
                 }
             }
         });

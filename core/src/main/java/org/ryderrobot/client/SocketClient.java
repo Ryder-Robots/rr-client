@@ -13,15 +13,18 @@ import org.codehaus.httpcache4j.uri.URIBuilder;
 import org.ryderrobot.models.ConnectionRequest;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Create and maintain connection to drone. Connection accepts HTTP and WS,  both should have the connection
  * maintained.
  */
 public class SocketClient {
-    private static final String SCHEME = "ws";
+    private static final String SCHEME_HTTP = "http";
+    private static final String SCHEME_WS = "ws";
+    private static final String SCHEME = SCHEME_WS;
     private  WebSocket socket;
-    private Json json;
+    private final Json json = new Json();
 
     private void init(String url, String clientId, String atHash) {
         socket = WebSockets.newSocket(url);
@@ -32,7 +35,7 @@ public class SocketClient {
         ConnectionRequest connectionRequest = new ConnectionRequest(
             atHash, clientId
         );
-        socket.send(json.toJson(connectionRequest));
+        socket.send(json.toJson(connectionRequest).getBytes(StandardCharsets.UTF_8));
     }
 
     /**
