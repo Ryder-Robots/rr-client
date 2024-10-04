@@ -18,9 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.common.Strings;
+import com.github.czyzby.websocket.WebSockets;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.listeners.MenuControllerListener;
+
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
@@ -35,7 +39,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private SocketClient socketClient;
+    private final SocketClient socketClient = new SocketClient();
 
     /**
      * Class constructor
@@ -66,18 +70,21 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         final TextField atHash = new TextField("", skin);
 
 
-        final TextButton connect = new TextButton("Connect", skin);
-        connect.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (Strings.isNotEmpty(addrTextField.getText())) {
-                    socketClient = new SocketClient(
-                        addrTextField.getText(),
-                        Integer.parseInt(portTxtField.getText()),
-                        "", clientId.getText(), atHash.getText());
+            final TextButton connect = new TextButton("Connect", skin);
+            connect.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+
+                    if (Strings.isNotEmpty(addrTextField.getText())) {
+                        socketClient.init(
+                            addrTextField.getText(),
+                            Integer.parseInt(portTxtField.getText()),
+                            clientId.getText(),
+                            atHash.getText());
+                    }
                 }
-            }
-        });
+            });
+
 
         final TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {

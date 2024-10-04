@@ -5,67 +5,59 @@ package org.ryderrobot.client;
  */
 
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
+import com.badlogic.gdx.net.Socket;
+import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Json;
-import com.github.czyzby.kiwi.util.common.Strings;
-import com.github.czyzby.websocket.WebSocket;
-import com.github.czyzby.websocket.WebSockets;
-import org.codehaus.httpcache4j.uri.URIBuilder;
+import com.badlogic.gdx.utils.JsonWriter;
 import org.ryderrobot.models.ConnectionRequest;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Create and maintain connection to drone. Connection accepts HTTP and WS,  both should have the connection
  * maintained.
  */
 public class SocketClient {
-    private static final String SCHEME_HTTP = "http";
-    private static final String SCHEME_WS = "ws";
-    private static final String SCHEME = SCHEME_WS;
-    private  WebSocket socket;
+    private Socket socket;
+    private  InputStream  sockinfd;
+    private  OutputStream sockoutfd;
     private final Json json = new Json();
 
-    private void init(String url, String clientId, String atHash) {
-        socket = WebSockets.newSocket(url);
-        socket.setSendGracefully(true);
-        socket.addListener(new ConnectionListener());
-        socket.connect();
-
-        ConnectionRequest connectionRequest = new ConnectionRequest(
-            atHash, clientId
-        );
-        socket.send(json.toJson(connectionRequest).getBytes(StandardCharsets.UTF_8));
+    public SocketClient() {
+        super();
+        json.setOutputType(JsonWriter.OutputType.json);
     }
 
-    /**
-     * HTTP REST request
-     *
-     * @param address to send request
-     * @param port port
-     * @param path path
-     */
-    public SocketClient(String address, int port, String path, String clientId, String atHash) {
-        if (Strings.isEmpty(address)) {
-            throw new RuntimeException("address is not set");
+    public void init(String host, int port, String clientId, String atHash) {
+
+        try {
+              socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
+              if (socket.isConnected()) {
+                  sockinfd = socket.getInputStream();
+                  sockoutfd = socket.getOutputStream();
+
+                  // attempt to connect to drone
+                  ConnectionRequest connectionRequest = new ConnectionRequest(clientId, atHash);
+                  sockoutfd.write(json.toJson(connectionRequest).getBytes());
+              }
+        } catch (Exception ex) {
+            throw new RuntimeException("network error", ex);
         }
-
-        URIBuilder builder = URIBuilder.fromString(address);
-        URI uri = builder.withScheme(SCHEME).withHost(address).withPort(port).withPath(path).toURI();
-        init(uri.toASCIIString(), clientId, atHash);
     }
 
-    /**
-     * Websocket request
-     */
-    public SocketClient(String address, int port, String clientId, String atHash) {
-        if (Strings.isEmpty(address)) {
-            throw new RuntimeException("address is not set");
-        }
-        init(WebSockets.toWebSocketUrl(address, port), clientId, atHash);
-    }
 
     void dispose() {
-        socket.close();
+        try {
+            if (socket.isConnected()) {
+                sockinfd.close();
+                sockoutfd.close();
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException("network error", ex);
+        }
     }
 }
