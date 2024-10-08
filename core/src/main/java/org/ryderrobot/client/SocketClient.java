@@ -50,7 +50,6 @@ public class SocketClient {
                   }
                   String manifestRaw = sb.toString();
 
-                  System.out.println("stop 2");
               }
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
