@@ -11,11 +11,10 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.StringBuilder;
 import org.ryderrobot.models.ConnectionRequest;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 /**
  * Create and maintain connection to drone. Connection accepts HTTP and WS,  both should have the connection
@@ -43,6 +42,15 @@ public class SocketClient {
                   // attempt to connect to drone
                   ConnectionRequest connectionRequest = new ConnectionRequest(clientId, atHash);
                   sockoutfd.write(json.toJson(connectionRequest).getBytes());
+                  sockoutfd.flush();
+                  BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                  StringBuilder sb = new StringBuilder();
+                  while (buffer.ready()) {
+                      sb.append((char) buffer.read());
+                  }
+                  String manifestRaw = sb.toString();
+
+                  System.out.println("stop 2");
               }
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
