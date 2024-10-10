@@ -43,7 +43,7 @@ public class SocketClient {
                   ConnectionRequest connectionRequest = new ConnectionRequest(clientId, atHash);
                   sockoutfd.write(json.toJson(connectionRequest).getBytes());
                   sockoutfd.flush();
-                  BufferedReader buffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                  BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
                   StringBuilder sb = new StringBuilder();
                   while (buffer.ready()) {
                       sb.append((char) buffer.read());
