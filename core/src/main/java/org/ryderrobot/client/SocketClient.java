@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.StringBuilder;
 import org.ryderrobot.models.ConnectionRequest;
+import org.ryderrobot.models.Drone;
 import org.ryderrobot.models.DroneManifest;
 
 import java.io.*;
@@ -22,7 +23,7 @@ import java.io.*;
  * Create and maintain connection to drone. Connection accepts HTTP and WS,  both should have the connection
  * maintained.
  */
-public class SocketClient {
+public class SocketClient  {
     private Socket socket;
     private InputStream sockinfd;
     private OutputStream sockoutfd;
@@ -42,11 +43,12 @@ public class SocketClient {
         }
     }
 
-    public <T> T ingress(Class<T> clazz) {
+    private <T> T ingressInternal(Class<T> clazz) {
         T object = null;
         try {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
             StringBuilder sb = new StringBuilder();
+
             while (buffer.ready()) {
                 sb.append((char) buffer.read());
             }
@@ -58,7 +60,9 @@ public class SocketClient {
     }
 
 
-    public DroneManifest init(String host, int port, String clientId, String atHash) {
+
+
+    public void init(String host, int port, String clientId, String atHash, Drone drone) {
         DroneManifest manifest = null;
         try {
             socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
@@ -68,12 +72,21 @@ public class SocketClient {
 
                 // attempt to connect to drone
                 egress(new ConnectionRequest(clientId, atHash));
-                manifest = ingress(DroneManifest.class);
+                manifest = ingressInternal(DroneManifest.class);
+
+                drone.setManifest(manifest);
             }
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
         }
-        return manifest;
+    }
+
+    public InputStream getSockinfd() {
+        return sockinfd;
+    }
+
+    public OutputStream getSockoutfd() {
+        return sockoutfd;
     }
 
 
