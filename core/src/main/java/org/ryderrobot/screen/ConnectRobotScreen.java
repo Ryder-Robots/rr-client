@@ -21,6 +21,7 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.listeners.MenuControllerListener;
+import org.ryderrobot.models.Drone;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
@@ -35,7 +36,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private final SocketClient socketClient = new SocketClient();
+    private final Drone drone;
 
     /**
      * Class constructor
@@ -46,13 +47,15 @@ public class ConnectRobotScreen extends Stage implements Screen  {
      * @param skin program layout
      * @param screensProcessor connect to other screens.
      */
-    public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin, ScreensProcessor screensProcessor) {
+    public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin,
+                              ScreensProcessor screensProcessor, Drone drone) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
         this.camera = camera;
         this.skin = skin;
         this.screensProcessor = screensProcessor;
+        this.drone = drone;
     }
 
     /**
@@ -70,13 +73,13 @@ public class ConnectRobotScreen extends Stage implements Screen  {
             connect.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-
+                    drone.setSocketClient(new SocketClient());
                     if (Strings.isNotEmpty(addrTextField.getText())) {
-                        socketClient.init(
+                        drone.setManifest(drone.getSocketClient().init(
                             addrTextField.getText(),
                             Integer.parseInt(portTxtField.getText()),
                             clientId.getText(),
-                            atHash.getText());
+                            atHash.getText()));
                     }
                 }
             });

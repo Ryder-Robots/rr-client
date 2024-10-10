@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.ryderrobot.models.Drone;
 import org.ryderrobot.screen.ConnectRobotScreen;
 import org.ryderrobot.screen.MainMenuScreen;
 import org.ryderrobot.screen.ScreensProcessor;
@@ -20,6 +21,7 @@ public class Main extends ApplicationAdapter {
     private Viewport viewPort;
     private OrthographicCamera camera;
     private final ScreensProcessor screensProcessor = new ScreensProcessor();
+    private final Drone drone = new Drone();
 
 
     Array<Screen> screens = new Array<>(true, 2);
@@ -35,7 +37,7 @@ public class Main extends ApplicationAdapter {
         backgroundText = new Texture("background.png");
 
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, screensProcessor));
-        screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, screensProcessor));
+        screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
 
         screens.get(screensProcessor.getCurrScreen()).show();
     }

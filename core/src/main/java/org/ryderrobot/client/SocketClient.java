@@ -58,8 +58,8 @@ public class SocketClient {
     }
 
 
-    public void init(String host, int port, String clientId, String atHash) {
-
+    public DroneManifest init(String host, int port, String clientId, String atHash) {
+        DroneManifest manifest = null;
         try {
             socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
             if (socket.isConnected()) {
@@ -68,11 +68,12 @@ public class SocketClient {
 
                 // attempt to connect to drone
                 egress(new ConnectionRequest(clientId, atHash));
-                DroneManifest manifest = ingress(DroneManifest.class);
+                manifest = ingress(DroneManifest.class);
             }
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
         }
+        return manifest;
     }
 
 
