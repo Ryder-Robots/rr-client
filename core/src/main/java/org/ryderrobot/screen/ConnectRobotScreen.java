@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
+import org.ryderrobot.client.SocketWriter;
 import org.ryderrobot.listeners.MenuControllerListener;
 import org.ryderrobot.models.Drone;
 
@@ -40,6 +41,8 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final ScreensProcessor screensProcessor;
     private final Drone drone;
     private final Stage stage;
+    private SocketWriter socketWriter;
+    private Thread writer;
 
     /**
      * Class constructor
@@ -81,11 +84,16 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                     try {
                         drone.setSocketClient(new SocketClient());
                         if (Strings.isNotEmpty(addrTextField.getText())) {
-                            drone.setManifest(drone.getSocketClient().init(
+                             drone.getSocketClient().init(
                                 addrTextField.getText(),
                                 Integer.parseInt(portTxtField.getText()),
                                 clientId.getText(),
-                                atHash.getText()));
+                                atHash.getText(), drone);
+
+                            // Create the writer socket.
+                            socketWriter = new SocketWriter(drone);
+                            writer = new Thread(socketWriter, "socketWriter");
+
                         } else {
                             throw new RuntimeException("missing required fields");
                         }
