@@ -11,8 +11,10 @@ import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.StringBuilder;
 import org.ryderrobot.models.ConnectionRequest;
+import org.ryderrobot.models.DroneManifest;
 
 import java.io.*;
 
@@ -22,8 +24,8 @@ import java.io.*;
  */
 public class SocketClient {
     private Socket socket;
-    private  InputStream  sockinfd;
-    private  OutputStream sockoutfd;
+    private InputStream sockinfd;
+    private OutputStream sockoutfd;
     private final Json json = new Json();
 
     public SocketClient() {
@@ -31,26 +33,43 @@ public class SocketClient {
         json.setOutputType(JsonWriter.OutputType.json);
     }
 
+    public void egress(@Null Object object) {
+        try {
+            sockoutfd.write(json.toJson(object).getBytes());
+            sockoutfd.flush();
+        } catch (IOException ex) {
+            //TODO: handle exception.
+        }
+    }
+
+    public <T> T ingress(Class<T> clazz) {
+        T object = null;
+        try {
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
+            StringBuilder sb = new StringBuilder();
+            while (buffer.ready()) {
+                sb.append((char) buffer.read());
+            }
+            object = new Json().fromJson(clazz, sb.toString());
+        } catch (IOException ex) {
+            //TODO: handle exception.
+        }
+        return object;
+    }
+
+
     public void init(String host, int port, String clientId, String atHash) {
 
         try {
-              socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
-              if (socket.isConnected()) {
-                  sockinfd = socket.getInputStream();
-                  sockoutfd = socket.getOutputStream();
+            socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
+            if (socket.isConnected()) {
+                sockinfd = socket.getInputStream();
+                sockoutfd = socket.getOutputStream();
 
-                  // attempt to connect to drone
-                  ConnectionRequest connectionRequest = new ConnectionRequest(clientId, atHash);
-                  sockoutfd.write(json.toJson(connectionRequest).getBytes());
-                  sockoutfd.flush();
-                  BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
-                  StringBuilder sb = new StringBuilder();
-                  while (buffer.ready()) {
-                      sb.append((char) buffer.read());
-                  }
-                  String manifestRaw = sb.toString();
-
-              }
+                // attempt to connect to drone
+                egress(new ConnectionRequest(clientId, atHash));
+                DroneManifest manifest = ingress(DroneManifest.class);
+            }
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
         }

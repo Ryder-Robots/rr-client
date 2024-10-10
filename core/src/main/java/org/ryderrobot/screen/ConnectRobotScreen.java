@@ -18,13 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.common.Strings;
-import com.github.czyzby.websocket.WebSockets;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.listeners.MenuControllerListener;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
