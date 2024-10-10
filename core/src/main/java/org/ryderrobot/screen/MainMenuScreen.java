@@ -47,7 +47,7 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screensProcessor.setCurrScreen(1);
+                screensProcessor.setCurrScreen(ScreensProcessor.SCR_CONNECT);
             }
         }, // connect
         new ClickListener(), // Create Flight Path
@@ -56,7 +56,7 @@ public class MainMenuScreen extends Stage implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (drone.isConnected()) {
-                    screensProcessor.setCurrScreen(2);
+                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_MAN_FLIGHT);
                 } else {
                     final Dialog dialog = new Dialog("not connected", skin);
                     dialog.text("you must first select a drone before you can fly it");
