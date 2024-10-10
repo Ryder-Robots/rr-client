@@ -77,7 +77,7 @@ public class SocketClient {
     }
 
 
-    void dispose() {
+    public void dispose() {
         try {
             if (socket.isConnected()) {
                 sockinfd.close();

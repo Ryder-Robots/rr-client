@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
         viewPort.apply();
         backgroundText = new Texture("background.png");
 
-        screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, screensProcessor));
+        screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
 
         screens.get(screensProcessor.getCurrScreen()).show();

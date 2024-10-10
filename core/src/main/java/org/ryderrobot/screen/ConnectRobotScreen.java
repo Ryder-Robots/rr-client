@@ -23,6 +23,8 @@ import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.listeners.MenuControllerListener;
 import org.ryderrobot.models.Drone;
 
+import java.util.Optional;
+
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
 import static org.ryderrobot.Constants.ROW_WIDTH;
@@ -37,6 +39,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
     private final Drone drone;
+    private final Stage stage;
 
     /**
      * Class constructor
@@ -56,6 +59,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         this.skin = skin;
         this.screensProcessor = screensProcessor;
         this.drone = drone;
+        this.stage = this;
     }
 
     /**
@@ -73,13 +77,33 @@ public class ConnectRobotScreen extends Stage implements Screen  {
             connect.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    drone.setSocketClient(new SocketClient());
-                    if (Strings.isNotEmpty(addrTextField.getText())) {
-                        drone.setManifest(drone.getSocketClient().init(
-                            addrTextField.getText(),
-                            Integer.parseInt(portTxtField.getText()),
-                            clientId.getText(),
-                            atHash.getText()));
+                    Optional<Exception> whatHappened = Optional.empty();
+                    try {
+                        drone.setSocketClient(new SocketClient());
+                        if (Strings.isNotEmpty(addrTextField.getText())) {
+                            drone.setManifest(drone.getSocketClient().init(
+                                addrTextField.getText(),
+                                Integer.parseInt(portTxtField.getText()),
+                                clientId.getText(),
+                                atHash.getText()));
+                        } else {
+                            throw new RuntimeException("missing required fields");
+                        }
+                    } catch (Exception e) {
+                        whatHappened = Optional.of(e);
+                    }
+
+                    if (drone.isConnected()) {
+                        screensProcessor.setCurrScreen(0);
+                    } else {
+                        String err = "unknown error";
+                        if (whatHappened.isPresent()) {
+                            err = whatHappened.get().getMessage() + "\n:" + whatHappened.get().getCause();
+                        }
+                        final Dialog dialog = new Dialog("could not connect", skin);
+                        dialog.text(err);
+                        dialog.button("Ok", false);
+                        dialog.show(stage);
                     }
                 }
             });
