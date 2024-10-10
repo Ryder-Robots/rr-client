@@ -6,6 +6,7 @@ public class ScreensProcessor {
 
     public static int SCR_MM = 0;
     public static int SCR_CONNECT = 1;
+    public static int SCR_MAN_FLIGHT = 2;
 
     public void setCurrScreen(int screen) {
         changed = true;

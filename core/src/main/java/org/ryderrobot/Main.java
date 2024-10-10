@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.models.Drone;
 import org.ryderrobot.screen.ConnectRobotScreen;
 import org.ryderrobot.screen.MainMenuScreen;
+import org.ryderrobot.screen.ManualFlightScreen;
 import org.ryderrobot.screen.ScreensProcessor;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -38,6 +39,7 @@ public class Main extends ApplicationAdapter {
 
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
+        screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
 
         screens.get(screensProcessor.getCurrScreen()).show();
     }
