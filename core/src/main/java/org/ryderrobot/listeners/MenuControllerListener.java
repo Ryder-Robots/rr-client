@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 import org.ryderrobot.Constants;
 
+@Deprecated
+// Look to implement DroneControllerListener.
 public class MenuControllerListener implements ControllerListener, EventListener  {
     private final TextButton[] buttons;
     private int currButtonIdx = 0;

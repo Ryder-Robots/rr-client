@@ -2,6 +2,8 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -58,6 +60,9 @@ public class ManualFlightScreen extends Stage implements Screen {
 
         addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
+
+        Controller controller = Controllers.getCurrent();
+
     }
 
     @Override
