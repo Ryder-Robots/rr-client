@@ -11,21 +11,15 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.env.Drone;
-import org.ryderrobot.screen.ConnectRobotScreen;
-import org.ryderrobot.screen.MainMenuScreen;
-import org.ryderrobot.screen.ManualFlightScreen;
-import org.ryderrobot.screen.ScreensProcessor;
+import org.ryderrobot.screen.*;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private Texture backgroundText;
     private Viewport viewPort;
     private OrthographicCamera camera;
-    private final ScreensProcessor screensProcessor = new ScreensProcessor();
+    private ScreensProcessor screensProcessor;
     private final Drone drone = new Drone();
-
-
-    Array<Screen> screens = new Array<>(true, 2);
 
     @Override
     public void create() {
@@ -37,27 +31,22 @@ public class Main extends ApplicationAdapter {
         viewPort.apply();
         backgroundText = new Texture("background.png");
 
-        screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
-        screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
-        screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, screensProcessor, drone));
+        screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone);
 
-        screens.get(screensProcessor.getCurrScreen()).show();
+        screensProcessor.get().show();
     }
 
     @Override
     public void render() {
         if (screensProcessor.hasChanged()) {
-            screens.get(screensProcessor.getCurrScreen()).show();
+            screensProcessor.get().show();
         }
-        screens.get(screensProcessor.getCurrScreen()).render(0);
+        screensProcessor.get().render(0);
     }
 
     @Override
     public void dispose() {
         backgroundText.dispose();
-
-        for (Screen s : screens) {
-            s.dispose();
-        }
+        screensProcessor.dispose();
     }
 }

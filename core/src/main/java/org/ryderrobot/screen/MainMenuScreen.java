@@ -66,7 +66,20 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener(), // Training Mode
         new ClickListener(), // Assisted Flight
         new ClickListener(), // Automated Flight
-        new ClickListener(), // Display drone details
+        new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (drone.isConnected()) {
+                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_DRONE_DETAILS);
+                } else {
+                    final Dialog dialog = new Dialog("not connected", skin);
+                    dialog.text("you must first select a drone before you can fly it");
+                    dialog.button("Ok", false);
+                    dialog.show(stage);
+                }
+            }
+
+        }, // Display drone details
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
