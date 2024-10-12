@@ -1,12 +1,19 @@
 package org.ryderrobot.client.handlers;
 
-import org.ryderrobot.client.env.Drone;
+import org.ryderrobot.env.Drone;
+import org.ryderrobot.env.Queue;
+import org.ryderrobot.models.hwmodel.Action;
+import org.ryderrobot.models.hwmodel.Observer;
 
 /**
  * Handle events for a controller, this should be implemented for each drone,
  */
 
 public interface ControllerHandler {
+
+    default void setEgress(Queue<Action> egress) {}
+
+    default void setIngress(Queue<Observer> ingress) {}
 
     /**
      * called when up button is pushed.

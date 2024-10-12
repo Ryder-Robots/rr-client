@@ -1,11 +1,12 @@
 package org.ryderrobot.client;
 
 import com.badlogic.gdx.utils.Json;
-import org.ryderrobot.client.env.Drone;
+import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.hwmodel.Action;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Optional;
 
 /**
  * Gets called when actions are to be sent to the drone.
@@ -22,12 +23,13 @@ public class SocketWriter implements Runnable{
     public void run() {
         while(drone.isConnected()) {
             try {
-                drone.getEgressAvailable().await();
-                Action action = drone.getAction();
-                if (drone.getSizeAction() > 0) {
+                drone.getEgress().available().await();
+
+                Optional<Action> action = drone.getEgress().pop();
+                if (action.isPresent()) {
                     OutputStream sockoutfd = drone.getSocketClient().getSockoutfd();
 
-                    sockoutfd.write((new Json()).toJson(action).getBytes());
+                    sockoutfd.write((new Json()).toJson(action.get()).getBytes());
                     sockoutfd.flush();
                 }
             } catch (InterruptedException interruptedException) {

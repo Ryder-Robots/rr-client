@@ -6,8 +6,6 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,8 +19,7 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.client.SocketWriter;
-import org.ryderrobot.listeners.MenuControllerListener;
-import org.ryderrobot.client.env.Drone;
+import org.ryderrobot.env.Drone;
 
 import java.util.Optional;
 
@@ -147,18 +144,6 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         addActor(mainTable);
         addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
-
-        final Controller controller = Controllers.getCurrent();
-        controller.addListener(new MenuControllerListener(null) {
-            @Override
-            public boolean buttonDownEvent(Controller controller, int i) {
-                if (i == Constants.CTRL_SCROLL_LEFT) {
-                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     /**

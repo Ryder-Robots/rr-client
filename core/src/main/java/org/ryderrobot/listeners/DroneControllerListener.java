@@ -4,7 +4,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.handlers.ControllerHandler;
-import org.ryderrobot.client.env.Drone;
 
 /**
  * Listens for controller events
@@ -12,7 +11,6 @@ import org.ryderrobot.client.env.Drone;
 
 public class DroneControllerListener implements ControllerListener {
     private final ControllerHandler handler;
-    private final Drone drone;
 
     // controller has some weird calibration, also want to stop too much
     // chatter so keeping these in class.
@@ -21,9 +19,9 @@ public class DroneControllerListener implements ControllerListener {
     private float axisXR = 0;
     private float axisYR = 0;
 
-    public DroneControllerListener(ControllerHandler handler, Drone drone) {
+
+    public DroneControllerListener(ControllerHandler handler) {
         this.handler = handler;
-        this.drone = drone;
     }
 
     @Override
