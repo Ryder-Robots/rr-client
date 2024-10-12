@@ -1,6 +1,7 @@
-package org.ryderrobot.models;
+package org.ryderrobot.client.env;
 
 import org.ryderrobot.client.SocketClient;
+import org.ryderrobot.models.DroneManifest;
 import org.ryderrobot.models.hwmodel.Action;
 import org.ryderrobot.models.hwmodel.Observer;
 

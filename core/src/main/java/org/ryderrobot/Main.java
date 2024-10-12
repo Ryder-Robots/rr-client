@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 import org.ryderrobot.screen.ConnectRobotScreen;
 import org.ryderrobot.screen.MainMenuScreen;
 import org.ryderrobot.screen.ManualFlightScreen;

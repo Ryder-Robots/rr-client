@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.StringBuilder;
 import org.ryderrobot.models.ConnectionRequest;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 import org.ryderrobot.models.DroneManifest;
 
 import java.io.*;

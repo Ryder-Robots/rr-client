@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
 import org.ryderrobot.listeners.MenuControllerListener;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;

@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 
 import static org.ryderrobot.Constants.ROW_HEIGHT;
 import static org.ryderrobot.Constants.ROW_WIDTH;

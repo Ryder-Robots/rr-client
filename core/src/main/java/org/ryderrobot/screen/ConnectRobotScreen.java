@@ -22,7 +22,7 @@ import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.client.SocketWriter;
 import org.ryderrobot.listeners.MenuControllerListener;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 
 import java.util.Optional;
 

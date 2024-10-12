@@ -1,12 +1,11 @@
 package org.ryderrobot.client;
 
 import com.badlogic.gdx.utils.Json;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.client.env.Drone;
 import org.ryderrobot.models.hwmodel.Action;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.concurrent.locks.Condition;
 
 /**
  * Gets called when actions are to be sent to the drone.
