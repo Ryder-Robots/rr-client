@@ -118,7 +118,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screensProcessor.setCurrScreen(0);
+                screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
             }
         });
 

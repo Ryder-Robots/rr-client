@@ -24,7 +24,7 @@ public class ScreensProcessor {
         OrthographicCamera camera,
         Skin skin,
         Drone drone) {
-        //TODO: this should be done in the screen-processor so that the array numbers will always match.
+
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this, drone));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this, drone));
         screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, this, drone));

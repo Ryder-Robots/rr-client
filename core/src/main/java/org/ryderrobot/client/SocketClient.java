@@ -43,8 +43,8 @@ public class SocketClient  {
         }
     }
 
-    private <T> T ingressInternal(Class<T> clazz) {
-        T object = null;
+    private DroneManifest ingressInternal() {
+        DroneManifest object = null;
         try {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
             StringBuilder sb = new StringBuilder();
@@ -52,9 +52,9 @@ public class SocketClient  {
             while (buffer.ready()) {
                 sb.append((char) buffer.read());
             }
-            object = new Json().fromJson(clazz, sb.toString());
+            object = new Json().fromJson(DroneManifest.class, sb.toString());
         } catch (IOException ex) {
-            //TODO: handle exception.
+            throw new RuntimeException("invalid manifest returned: " + ex.getMessage());
         }
         return object;
     }
@@ -72,8 +72,7 @@ public class SocketClient  {
 
                 // attempt to connect to drone
                 egress(new ConnectionRequest(clientId, atHash));
-                manifest = ingressInternal(DroneManifest.class);
-
+                manifest = ingressInternal();
                 drone.setManifest(manifest);
             }
         } catch (Exception ex) {

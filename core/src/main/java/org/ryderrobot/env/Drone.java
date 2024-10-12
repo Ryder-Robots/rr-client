@@ -5,6 +5,8 @@ import org.ryderrobot.models.DroneManifest;
 import org.ryderrobot.models.hwmodel.Action;
 import org.ryderrobot.models.hwmodel.Observer;
 
+import java.util.Optional;
+
 /**
  * Used to control a done. This class is used by all screens to communicate with the drone.
  */
@@ -28,6 +30,10 @@ public class Drone {
     }
 
     public void setManifest(DroneManifest manifest) {
+        if (Optional.ofNullable(manifest).isEmpty()) {
+            throw new RuntimeException("did not receive manifest from drone.");
+        }
+
         connected = true;
         this.manifest = manifest;
     }

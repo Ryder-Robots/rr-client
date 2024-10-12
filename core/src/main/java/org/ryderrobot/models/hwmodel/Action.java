@@ -1,8 +1,12 @@
 package org.ryderrobot.models.hwmodel;
 
 public class Action {
-    private final OpCodes op;
-    private final float value;
+    private OpCodes op;
+    private float value;
+
+    public Action() {
+
+    }
 
     public Action(OpCodes op, float value) {
         this.op = op;
