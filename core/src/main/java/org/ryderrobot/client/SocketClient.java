@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.StringBuilder;
+import org.ryderrobot.Constants;
 import org.ryderrobot.models.ConnectionRequest;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.DroneManifest;
@@ -49,12 +50,24 @@ public class SocketClient  {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
             StringBuilder sb = new StringBuilder();
 
+            if (!buffer.ready()) {
+                for (int i = 0; i < Constants.TIMEOUT; i++) {
+                    Thread.sleep(10);
+                }
+            }
+
+            if (!buffer.ready()) {
+                throw new RuntimeException("connection timed out");
+            }
+
             while (buffer.ready()) {
                 sb.append((char) buffer.read());
             }
             object = new Json().fromJson(DroneManifest.class, sb.toString());
         } catch (IOException ex) {
             throw new RuntimeException("invalid manifest returned: " + ex.getMessage());
+        } catch (InterruptedException ex) {
+            throw new RuntimeException("connection interrupted: " + ex.getMessage());
         }
         return object;
     }

@@ -26,4 +26,6 @@ public class Constants {
     // UI Objects
     public static final int ROW_HEIGHT = 60;
     public static final int ROW_WIDTH = 300;
+
+    public static final int TIMEOUT = 10;
 }

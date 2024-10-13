@@ -1,6 +1,7 @@
 package org.ryderrobot.client;
 
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.hwmodel.Action;
 
@@ -21,21 +22,21 @@ public class SocketWriter implements Runnable{
 
     @Override
     public void run() {
+        final Json json = new Json();
+        json.setOutputType(JsonWriter.OutputType.json);
         while(drone.isConnected()) {
             try {
-                drone.getEgress().available().wait();
+                if (drone.getEgress().size() > 0) {
 
-                Optional<Action> action = drone.getEgress().pop();
-                if (action.isPresent()) {
-                    OutputStream sockoutfd = drone.getSocketClient().getSockoutfd();
-
-                    sockoutfd.write((new Json()).toJson(action.get()).getBytes());
-                    sockoutfd.flush();
+                    Optional<Action> action = drone.getEgress().pop();
+                    if (action.isPresent()) {
+                        OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
+                        sockOutFd.write(json.toJson(action.get()).getBytes());
+                        sockOutFd.flush();
+                    }
                 }
-            } catch (InterruptedException interruptedException) {
-                // TODO: ignore for now. these probaly want to be put on a failed request queue or something
             } catch (IOException ex) {
-                // TODO: handle or put on a failed request queue
+                throw new RuntimeException("lost connection with drone");
             }
         }
 

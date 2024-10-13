@@ -28,7 +28,6 @@ public class Queue<T> {
             queue.add(event);
         } finally {
             lock.unlock();
-            available.notify();
         }
     }
 
@@ -41,9 +40,12 @@ public class Queue<T> {
     public Optional<T> pop() {
         T event = null;
         if (!queue.isEmpty()) {
-            lock.lock();
-            event = queue.removeFirst();
-            lock.unlock();
+            try {
+                lock.lock();
+                event = queue.removeFirst();
+            } finally {
+                lock.unlock();
+            }
         }
         return Optional.ofNullable(event);
     }
