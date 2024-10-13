@@ -27,8 +27,8 @@ public class Queue<T> {
             lock.lock();
             queue.add(event);
         } finally {
-            available.signalAll();
             lock.unlock();
+            available.notify();
         }
     }
 

@@ -23,7 +23,7 @@ public class SocketWriter implements Runnable{
     public void run() {
         while(drone.isConnected()) {
             try {
-                drone.getEgress().available().await();
+                drone.getEgress().available().wait();
 
                 Optional<Action> action = drone.getEgress().pop();
                 if (action.isPresent()) {

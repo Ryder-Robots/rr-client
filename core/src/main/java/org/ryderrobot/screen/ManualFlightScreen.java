@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
 import org.ryderrobot.env.Drone;
+import org.ryderrobot.listeners.DroneControllerListener;
 
 import static org.ryderrobot.Constants.ROW_HEIGHT;
 import static org.ryderrobot.Constants.ROW_WIDTH;
@@ -29,6 +30,7 @@ public class ManualFlightScreen extends Stage implements Screen {
     private final Drone drone;
     private final Stage stage;
     private final Skin skin;
+    private DroneControllerListener droneControllerListener;
 
     public ManualFlightScreen(Viewport viewport, Texture backgroundTexture, Camera camera,
                        Skin skin, ScreensProcessor screensProcessor, Drone drone) {
@@ -62,7 +64,8 @@ public class ManualFlightScreen extends Stage implements Screen {
         Gdx.input.setInputProcessor(this);
 
         Controller controller = Controllers.getCurrent();
-
+        droneControllerListener = new DroneControllerListener(drone.getHandler());
+        controller.addListener(droneControllerListener);
     }
 
     @Override

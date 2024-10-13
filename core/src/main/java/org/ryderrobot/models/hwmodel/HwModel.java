@@ -9,18 +9,18 @@ import java.util.List;
 public class HwModel {
 
     private Dtype dtype;
-    private List<Action> actions;
-    private List<Observer> observers;
+    private List<OpCodes> actions;
+    private List<OpCodes> observers;
 
     public Dtype getDtype() {
         return dtype;
     }
 
-    public List<Action> getActions() {
+    public List<OpCodes> getActions() {
         return actions;
     }
 
-    public List<Observer> getObservers() {
+    public List<OpCodes> getObservers() {
         return observers;
     }
 }

@@ -1,6 +1,8 @@
 package org.ryderrobot.env;
 
 import org.ryderrobot.client.SocketClient;
+import org.ryderrobot.client.handlers.ControllerHandler;
+import org.ryderrobot.client.handlers.HandlerFactory;
 import org.ryderrobot.models.DroneManifest;
 import org.ryderrobot.models.hwmodel.Action;
 import org.ryderrobot.models.hwmodel.Observer;
@@ -17,6 +19,7 @@ public class Drone {
     private SocketClient socketClient;  // connection to the drone.
     private boolean connected = false;  // when true indicates that there is a connected drone.
     private DroneManifest manifest;     // description of the drone.
+    private ControllerHandler handler;
 
     private final Queue<Action> egress = new Queue();
     private final Queue<Observer> ingres = new Queue();
@@ -35,6 +38,7 @@ public class Drone {
         }
 
         connected = true;
+        handler = HandlerFactory.getHandler(manifest, ingres, egress);
         this.manifest = manifest;
     }
 
@@ -57,5 +61,9 @@ public class Drone {
 
     public Queue<Observer> getIngres() {
         return ingres;
+    }
+
+    public ControllerHandler getHandler() {
+        return handler;
     }
 }

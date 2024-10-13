@@ -90,6 +90,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                             // Create the writer socket.
                             socketWriter = new SocketWriter(drone);
                             writer = new Thread(socketWriter, "socketWriter");
+                            writer.start();
 
                         } else {
                             throw new RuntimeException("missing required fields");
