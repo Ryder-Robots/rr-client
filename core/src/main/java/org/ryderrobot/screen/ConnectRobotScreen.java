@@ -6,8 +6,6 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,8 +19,7 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.Constants;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.client.SocketWriter;
-import org.ryderrobot.listeners.MenuControllerListener;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.env.Drone;
 
 import java.util.Optional;
 
@@ -33,7 +30,7 @@ import static org.ryderrobot.Constants.ROW_WIDTH;
 /**
  * connect to drone.
  */
-public class ConnectRobotScreen extends Stage implements Screen  {
+public class ConnectRobotScreen extends Stage implements Screen {
     private final Viewport viewPort;
     private final Texture backgroundTexture;
     private final Camera camera;
@@ -47,11 +44,11 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     /**
      * Class constructor
      *
-     * @param viewport common view port.
+     * @param viewport          common view port.
      * @param backgroundTexture common background
-     * @param camera non connected camera
-     * @param skin program layout
-     * @param screensProcessor connect to other screens.
+     * @param camera            non connected camera
+     * @param skin              program layout
+     * @param screensProcessor  connect to other screens.
      */
     public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin,
                               ScreensProcessor screensProcessor, Drone drone) {
@@ -76,52 +73,53 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         final TextField atHash = new TextField("", skin);
 
 
-            final TextButton connect = new TextButton("Connect", skin);
-            connect.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Optional<Exception> whatHappened = Optional.empty();
-                    try {
-                        drone.setSocketClient(new SocketClient());
-                        if (Strings.isNotEmpty(addrTextField.getText())) {
-                             drone.getSocketClient().init(
-                                addrTextField.getText(),
-                                Integer.parseInt(portTxtField.getText()),
-                                clientId.getText(),
-                                atHash.getText(), drone);
+        final TextButton connect = new TextButton("Connect", skin);
+        connect.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Optional<Exception> whatHappened = Optional.empty();
+                try {
+                    drone.setSocketClient(new SocketClient());
+                    if (Strings.isNotEmpty(addrTextField.getText())) {
+                        drone.getSocketClient().init(
+                            addrTextField.getText(),
+                            Integer.parseInt(portTxtField.getText()),
+                            clientId.getText(),
+                            atHash.getText(), drone);
 
-                            // Create the writer socket.
-                            socketWriter = new SocketWriter(drone);
-                            writer = new Thread(socketWriter, "socketWriter");
+                        // Create the writer socket.
+                        socketWriter = new SocketWriter(drone);
+                        writer = new Thread(socketWriter, "socketWriter");
+                        writer.start();
 
-                        } else {
-                            throw new RuntimeException("missing required fields");
-                        }
-                    } catch (Exception e) {
-                        whatHappened = Optional.of(e);
-                    }
-
-                    if (drone.isConnected()) {
-                        screensProcessor.setCurrScreen(0);
                     } else {
-                        String err = "unknown error";
-                        if (whatHappened.isPresent()) {
-                            err = whatHappened.get().getMessage() + "\n:" + whatHappened.get().getCause();
-                        }
-                        final Dialog dialog = new Dialog("could not connect", skin);
-                        dialog.text(err);
-                        dialog.button("Ok", false);
-                        dialog.show(stage);
+                        throw new RuntimeException("missing required fields");
                     }
+                } catch (Exception e) {
+                    whatHappened = Optional.of(e);
                 }
-            });
+
+                if (drone.isConnected()) {
+                    screensProcessor.setCurrScreen(0);
+                } else {
+                    String err = "unknown error";
+                    if (whatHappened.isPresent()) {
+                        err = whatHappened.get().getMessage() + "\n:" + whatHappened.get().getCause();
+                    }
+                    final Dialog dialog = new Dialog("could not connect", skin);
+                    dialog.text(err);
+                    dialog.button("Ok", false);
+                    dialog.show(stage);
+                }
+            }
+        });
 
 
         final TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screensProcessor.setCurrScreen(0);
+                screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
             }
         });
 
@@ -147,18 +145,6 @@ public class ConnectRobotScreen extends Stage implements Screen  {
         addActor(mainTable);
         addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
-
-        final Controller controller = Controllers.getCurrent();
-        controller.addListener(new MenuControllerListener(null) {
-            @Override
-            public boolean buttonDownEvent(Controller controller, int i) {
-                if (i == Constants.CTRL_SCROLL_LEFT) {
-                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     /**
@@ -181,7 +167,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     /**
      * Resizes the screen to dimensions X, and Y
      *
-     * @param width viewable width
+     * @param width  viewable width
      * @param height viewable height
      */
     @Override

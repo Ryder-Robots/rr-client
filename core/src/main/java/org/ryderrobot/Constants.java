@@ -18,8 +18,14 @@ public class Constants {
     public static final int CTRL_SCROLL_DOWN = 11;
     public static final int CTRL_SCROLL_LEFT = 13;
     public static final int CTRL_X_BUTTON = 0;
+    public static final int CTRL_AXIS_XL = 0;
+    public static final int CTRL_AXIS_YL = 1;
+    public static final int CTRL_AXIS_XR = 2;
+    public static final int CTRL_AXIS_YR = 3;
 
     // UI Objects
     public static final int ROW_HEIGHT = 60;
     public static final int ROW_WIDTH = 300;
+
+    public static final int TIMEOUT = 10;
 }

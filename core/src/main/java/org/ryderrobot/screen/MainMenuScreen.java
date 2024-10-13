@@ -2,8 +2,6 @@ package org.ryderrobot.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,8 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.Constants;
-import org.ryderrobot.listeners.MenuControllerListener;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.env.Drone;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.Constants.ROW_HEIGHT;
@@ -39,6 +36,7 @@ public class MainMenuScreen extends Stage implements Screen {
         "Training Mode",
         "Assisted Flight",
         "Automated Flight",
+        "Drone Details",
         "Exit"
     };
 
@@ -68,6 +66,20 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener(), // Training Mode
         new ClickListener(), // Assisted Flight
         new ClickListener(), // Automated Flight
+        new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (drone.isConnected()) {
+                    screensProcessor.setCurrScreen(ScreensProcessor.SCR_DRONE_DETAILS);
+                } else {
+                    final Dialog dialog = new Dialog("not connected", skin);
+                    dialog.text("you must first select a drone before you can fly it");
+                    dialog.button("Ok", false);
+                    dialog.show(stage);
+                }
+            }
+
+        }, // Display drone details
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -107,25 +119,6 @@ public class MainMenuScreen extends Stage implements Screen {
             mainTable.row();
             buttons[i] = button;
         }
-        Controller controller = Controllers.getCurrent();
-        controller.addListener(new MenuControllerListener(buttons) {
-                @Override
-                public boolean buttonDownEvent(Controller controller, int i) {
-                    if (i == Constants.CTRL_X_BUTTON) {
-                        switch (getCurrButtonIdx()) {
-                            case 0:
-                                screensProcessor.setCurrScreen(ScreensProcessor.SCR_CONNECT);
-                                break;
-                            case 6:
-                                Gdx.app.exit();
-                                break;
-                        }
-                        return true;
-                    }
-                    return false;
-                }
-            }
-        );
         setActionsRequestRendering(true);
         addActor(mainTable);
     }

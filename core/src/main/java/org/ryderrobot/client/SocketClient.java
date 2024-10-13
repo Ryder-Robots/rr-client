@@ -13,8 +13,9 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.StringBuilder;
+import org.ryderrobot.Constants;
 import org.ryderrobot.models.ConnectionRequest;
-import org.ryderrobot.models.Drone;
+import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.DroneManifest;
 
 import java.io.*;
@@ -43,18 +44,30 @@ public class SocketClient  {
         }
     }
 
-    private <T> T ingressInternal(Class<T> clazz) {
-        T object = null;
+    private DroneManifest ingressInternal() {
+        DroneManifest object = null;
         try {
             BufferedReader buffer = new BufferedReader(new InputStreamReader(sockinfd));
             StringBuilder sb = new StringBuilder();
 
+            if (!buffer.ready()) {
+                for (int i = 0; i < Constants.TIMEOUT; i++) {
+                    Thread.sleep(10);
+                }
+            }
+
+            if (!buffer.ready()) {
+                throw new RuntimeException("connection timed out");
+            }
+
             while (buffer.ready()) {
                 sb.append((char) buffer.read());
             }
-            object = new Json().fromJson(clazz, sb.toString());
+            object = new Json().fromJson(DroneManifest.class, sb.toString());
         } catch (IOException ex) {
-            //TODO: handle exception.
+            throw new RuntimeException("invalid manifest returned: " + ex.getMessage());
+        } catch (InterruptedException ex) {
+            throw new RuntimeException("connection interrupted: " + ex.getMessage());
         }
         return object;
     }
@@ -72,8 +85,7 @@ public class SocketClient  {
 
                 // attempt to connect to drone
                 egress(new ConnectionRequest(clientId, atHash));
-                manifest = ingressInternal(DroneManifest.class);
-
+                manifest = ingressInternal();
                 drone.setManifest(manifest);
             }
         } catch (Exception ex) {
