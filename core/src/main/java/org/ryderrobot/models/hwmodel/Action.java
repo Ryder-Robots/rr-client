@@ -1,23 +1,17 @@
 package org.ryderrobot.models.hwmodel;
 
+/**
+ * base template for creating actions.
+ */
+
 public class Action {
-    private OpCodes op;
-    private float value;
+    private final OpCodes op;
 
-    public Action() {
-
-    }
-
-    public Action(OpCodes op, float value) {
+    public Action(OpCodes op) {
         this.op = op;
-        this.value = value;
     }
 
     public OpCodes getOp() {
         return op;
-    }
-
-    public float getValue() {
-        return value;
     }
 }

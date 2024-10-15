@@ -1,9 +1,8 @@
 package org.ryderrobot.client.handlers;
 
+import com.badlogic.gdx.utils.Json;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.env.Queue;
-import org.ryderrobot.models.hwmodel.Action;
-import org.ryderrobot.models.hwmodel.Observer;
 
 /**
  * Handle events for a controller, this should be implemented for each drone,
@@ -11,9 +10,9 @@ import org.ryderrobot.models.hwmodel.Observer;
 
 public interface ControllerHandler {
 
-    default void setEgress(Queue<Action> egress) {}
+    default void setEgress(Queue<String> egress) {}
 
-    default void setIngress(Queue<Observer> ingress) {}
+    default void setIngress(Queue<String> ingress) {}
 
     /**
      * called when up button is pushed.

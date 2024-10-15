@@ -1,11 +1,10 @@
 package org.ryderrobot.env;
 
+import com.badlogic.gdx.utils.Json;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.client.handlers.ControllerHandler;
 import org.ryderrobot.client.handlers.HandlerFactory;
 import org.ryderrobot.models.DroneManifest;
-import org.ryderrobot.models.hwmodel.Action;
-import org.ryderrobot.models.hwmodel.Observer;
 
 import java.util.Optional;
 
@@ -21,8 +20,8 @@ public class Drone {
     private DroneManifest manifest;     // description of the drone.
     private ControllerHandler handler;
 
-    private final Queue<Action> egress = new Queue();
-    private final Queue<Observer> ingres = new Queue();
+    private final Queue<String> egress = new Queue<>();
+    private final Queue<String> ingres = new Queue<>();
 
     public void setSocketClient(SocketClient socketClient) {
         this.socketClient = socketClient;
@@ -55,11 +54,11 @@ public class Drone {
         connected = false;
     }
 
-    public Queue<Action> getEgress() {
+    public Queue<String> getEgress() {
         return egress;
     }
 
-    public Queue<Observer> getIngres() {
+    public Queue<String> getIngres() {
         return ingres;
     }
 
