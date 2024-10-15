@@ -3,8 +3,7 @@ package org.ryderrobot.client.handlers;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import org.ryderrobot.models.hwmodel.Action;
-import org.ryderrobot.models.hwmodel.L298N;
-import org.ryderrobot.models.hwmodel.OpCodes;
+import org.ryderrobot.models.hwmodel.payloads.L298N;
 import org.ryderrobot.models.hwmodel.OpU1MaVcc;
 import org.ryderrobot.models.hwmodel.l298.In;
 
@@ -32,7 +31,6 @@ public class SkuLd001 extends ControllerHandlerBase {
         }
 
         OpU1MaVcc operation = new OpU1MaVcc(
-            new Action(OP_U1_MA_VCC),
             payload
         );
 

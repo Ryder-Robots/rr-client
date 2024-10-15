@@ -9,14 +9,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.net.Socket;
 import com.badlogic.gdx.net.SocketHints;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
-import com.badlogic.gdx.utils.Null;
+import com.badlogic.gdx.utils.*;
 import com.badlogic.gdx.utils.StringBuilder;
 import org.ryderrobot.Constants;
 import org.ryderrobot.models.ConnectionRequest;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.DroneManifest;
+import org.ryderrobot.models.hwmodel.payloads.Disconnect;
 
 import java.io.*;
 
@@ -40,7 +39,7 @@ public class SocketClient  {
             sockoutfd.write(json.toJson(object).getBytes());
             sockoutfd.flush();
         } catch (IOException ex) {
-            //TODO: handle exception.
+            throw new RuntimeException("could not communicate with drone: " + ex.getMessage());
         }
     }
 
@@ -88,6 +87,10 @@ public class SocketClient  {
                 manifest = ingressInternal();
                 drone.setManifest(manifest);
             }
+        } catch (SerializationException ex) {
+            // attempt to disconnect from drone.
+            egress(new Disconnect());
+            throw new RuntimeException("handshake error", ex);
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
         }

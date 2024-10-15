@@ -1,4 +1,4 @@
-package org.ryderrobot.models.hwmodel;
+package org.ryderrobot.models.hwmodel.payloads;
 
 import org.ryderrobot.models.hwmodel.l298.In;
 
