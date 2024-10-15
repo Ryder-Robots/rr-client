@@ -1,0 +1,10 @@
+{
+  "action" : {
+    "op": "OP_U1_MA_VCC"
+  },
+  "payload": {
+    "ea": 0.34,
+    "eb": 0.34,
+    "in": 5
+  }
+}

@@ -1,10 +1,9 @@
 package org.ryderrobot.models.hwmodel;
 
 public enum OpCodes {
-    OP_U1_MA_VCC((short)0x01),
-    OP_U1_CMD((short) 0x02);
+    OP_U1_MA_VCC((short)0x01);
 
-    private short opCode;
+    private final short opCode;
 
     OpCodes(short opCode) {
         this.opCode = opCode;

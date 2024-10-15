@@ -3,7 +3,6 @@ package org.ryderrobot.client;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonWriter;
 import org.ryderrobot.env.Drone;
-import org.ryderrobot.models.hwmodel.Action;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -28,10 +27,10 @@ public class SocketWriter implements Runnable{
             try {
                 if (drone.getEgress().size() > 0) {
 
-                    Optional<Action> action = drone.getEgress().pop();
+                    Optional<String> action = drone.getEgress().pop();
                     if (action.isPresent()) {
                         OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
-                        sockOutFd.write(json.toJson(action.get()).getBytes());
+                        sockOutFd.write(action.get().getBytes());
                         sockOutFd.flush();
                     }
                 }
