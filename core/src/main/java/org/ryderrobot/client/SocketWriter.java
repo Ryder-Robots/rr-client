@@ -26,7 +26,6 @@ public class SocketWriter implements Runnable{
         while(drone.isConnected()) {
             try {
                 if (drone.getEgress().size() > 0) {
-
                     Optional<String> action = drone.getEgress().pop();
                     if (action.isPresent()) {
                         OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
