@@ -12,11 +12,21 @@ import java.util.Optional;
  * Gets called when actions are to be sent to the drone.
  */
 
-public class SocketWriter implements Runnable{
+public class SocketWriter implements Runnable {
     private final Drone drone;
 
     public SocketWriter(Drone drone) {
         this.drone = drone;
+    }
+
+    public void write(String msg) {
+        try {
+            OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
+            sockOutFd.write(msg.getBytes());
+            sockOutFd.flush();
+        } catch (IOException ex) {
+            throw new RuntimeException("lost connection with drone");
+        }
     }
 
     @Override
@@ -24,19 +34,10 @@ public class SocketWriter implements Runnable{
         final Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
         while(drone.isConnected()) {
-            try {
                 if (drone.getEgress().size() > 0) {
                     Optional<String> action = drone.getEgress().pop();
-                    if (action.isPresent()) {
-                        OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
-                        sockOutFd.write(action.get().getBytes());
-                        sockOutFd.flush();
-                    }
+                    action.ifPresent(this::write);
                 }
-            } catch (IOException ex) {
-                throw new RuntimeException("lost connection with drone");
-            }
         }
-
     }
 }

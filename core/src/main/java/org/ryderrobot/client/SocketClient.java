@@ -15,7 +15,7 @@ import org.ryderrobot.Constants;
 import org.ryderrobot.models.ConnectionRequest;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.models.DroneManifest;
-import org.ryderrobot.models.hwmodel.payloads.Disconnect;
+import org.ryderrobot.models.hwmodel.OpDisconnect;
 
 import java.io.*;
 
@@ -29,11 +29,19 @@ public class SocketClient  {
     private OutputStream sockoutfd;
     private final Json json = new Json();
 
+    /**
+     * create new socket client instance.
+     */
     public SocketClient() {
         super();
         json.setOutputType(JsonWriter.OutputType.json);
     }
 
+    /**
+     * write to socket, socket must have a connection first.
+     *
+     * @param object to write
+     */
     public void egress(@Null Object object) {
         try {
             sockoutfd.write(json.toJson(object).getBytes());
@@ -43,6 +51,11 @@ public class SocketClient  {
         }
     }
 
+    /**
+     * get manifest from drone.
+     *
+     * @return drone manifest
+     */
     private DroneManifest ingressInternal() {
         DroneManifest object = null;
         try {
@@ -71,11 +84,17 @@ public class SocketClient  {
         return object;
     }
 
-
-
-
+    /**
+     * initilize connection to drone.
+     *
+     * @param host network identifier of drone
+     * @param port TCP connection
+     * @param clientId client Identifier for authentication
+     * @param atHash client passphrase
+     * @param drone drone object
+     */
     public void init(String host, int port, String clientId, String atHash, Drone drone) {
-        DroneManifest manifest = null;
+        DroneManifest manifest;
         try {
             socket = Gdx.net.newClientSocket(Net.Protocol.TCP, host, port, new SocketHints());
             if (socket.isConnected()) {
@@ -89,30 +108,51 @@ public class SocketClient  {
             }
         } catch (SerializationException ex) {
             // attempt to disconnect from drone.
-            egress(new Disconnect());
+            dispose();
             throw new RuntimeException("handshake error", ex);
         } catch (Exception ex) {
             throw new RuntimeException("network error", ex);
         }
     }
 
+    /**
+     * input stream, receives observations from drone.
+     *
+     * @return drone input stream
+     */
     public InputStream getSockinfd() {
         return sockinfd;
     }
 
+    /**
+     * output stream for drone.
+     *
+     * @return drone output stream
+     */
     public OutputStream getSockoutfd() {
         return sockoutfd;
     }
 
-
+    /**
+     * called to disconnect the drone.
+     */
     public void dispose() {
         try {
             if (socket.isConnected()) {
+                egress(new OpDisconnect());
                 sockinfd.close();
                 sockoutfd.close();
             }
         } catch (IOException ex) {
             throw new RuntimeException("network error", ex);
         }
+    }
+
+    /**
+     * disconnect from drone.
+     *
+     */
+    public void disconnect() {
+        dispose();
     }
 }
