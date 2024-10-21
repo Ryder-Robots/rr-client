@@ -20,7 +20,9 @@ public class SocketWriter implements Runnable {
     }
 
     public void write(String msg) {
+        final char EOR = 0x1E;
         try {
+            msg = msg + EOR;
             OutputStream sockOutFd = drone.getSocketClient().getSockoutfd();
             sockOutFd.write(msg.getBytes());
             sockOutFd.flush();
