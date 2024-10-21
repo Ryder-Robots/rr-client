@@ -1,6 +1,5 @@
 package org.ryderrobot.env;
 
-import com.badlogic.gdx.utils.Json;
 import org.ryderrobot.client.SocketClient;
 import org.ryderrobot.client.handlers.ControllerHandler;
 import org.ryderrobot.client.handlers.HandlerFactory;
@@ -37,7 +36,7 @@ public class Drone {
         }
 
         connected = true;
-        handler = HandlerFactory.getHandler(manifest, ingres, egress);
+        handler = HandlerFactory.getHandler(manifest, ingres, egress, this);
         this.manifest = manifest;
     }
 

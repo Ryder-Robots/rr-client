@@ -2,14 +2,13 @@ package org.ryderrobot;
 
 import com.badlogic.gdx.ApplicationAdapter;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.ryderrobot.client.SocketWriter;
 import org.ryderrobot.env.Drone;
 import org.ryderrobot.screen.*;
 
@@ -20,9 +19,16 @@ public class Main extends ApplicationAdapter {
     private OrthographicCamera camera;
     private ScreensProcessor screensProcessor;
     private final Drone drone = new Drone();
+    private SocketWriter socketWriter;
+    private Thread writer;
 
     @Override
     public void create() {
+        // Create the writer socket.
+        socketWriter = new SocketWriter(drone);
+        writer = new Thread(socketWriter, "socketWriter");
+        writer.start();
+
         TextureAtlas atlas = new TextureAtlas(Constants.UI_SKIN_ATLAS);
         Skin skin = new Skin(Constants.UI_SKIN, atlas);
         camera = new OrthographicCamera();
@@ -30,9 +36,7 @@ public class Main extends ApplicationAdapter {
         viewPort = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
         viewPort.apply();
         backgroundText = new Texture("background.png");
-
         screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone);
-
         screensProcessor.get().show();
     }
 

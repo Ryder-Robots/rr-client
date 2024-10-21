@@ -1,5 +1,6 @@
 package org.ryderrobot.client.handlers;
 
+import org.ryderrobot.env.Drone;
 import org.ryderrobot.env.Queue;
 import org.ryderrobot.models.DroneManifest;
 
@@ -8,8 +9,8 @@ import org.ryderrobot.models.DroneManifest;
  */
 
 public class HandlerFactory {
-    public static ControllerHandler getHandler(DroneManifest manifest, Queue<String> ingress, Queue<String> egress) {
-        ControllerHandler handler = new SkuLd001();
+    public static ControllerHandler getHandler(DroneManifest manifest, Queue<String> ingress, Queue<String> egress, Drone drone) {
+        ControllerHandler handler = new SkuLd001(drone);
 
         handler.setEgress(egress);
         handler.setIngress(ingress);

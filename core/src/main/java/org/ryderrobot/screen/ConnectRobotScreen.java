@@ -38,8 +38,6 @@ public class ConnectRobotScreen extends Stage implements Screen {
     private final ScreensProcessor screensProcessor;
     private final Drone drone;
     private final Stage stage;
-    private SocketWriter socketWriter;
-    private Thread writer;
 
     /**
      * Class constructor
@@ -71,8 +69,6 @@ public class ConnectRobotScreen extends Stage implements Screen {
         final TextField portTxtField = new TextField("", skin);
         final TextField clientId = new TextField("", skin);
         final TextField atHash = new TextField("", skin);
-
-
         final TextButton connect = new TextButton("Connect", skin);
         connect.addListener(new ClickListener() {
             @Override
@@ -86,12 +82,6 @@ public class ConnectRobotScreen extends Stage implements Screen {
                             Integer.parseInt(portTxtField.getText()),
                             clientId.getText(),
                             atHash.getText(), drone);
-
-                        // Create the writer socket.
-                        socketWriter = new SocketWriter(drone);
-                        writer = new Thread(socketWriter, "socketWriter");
-                        writer.start();
-
                     } else {
                         throw new RuntimeException("missing required fields");
                     }
@@ -113,7 +103,6 @@ public class ConnectRobotScreen extends Stage implements Screen {
                 }
             }
         });
-
 
         final TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {
