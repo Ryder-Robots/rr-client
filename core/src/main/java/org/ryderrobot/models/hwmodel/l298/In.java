@@ -5,9 +5,11 @@ package org.ryderrobot.models.hwmodel.l298;
  */
 
 public enum In {
-    EN_FORWARD((short) 0b0101),
-    EN_BACKWARD((short) 0b1010),
-    EN_STOP((short) 0x0000);
+    EN_BACKWARD((short) 0b0101),
+    EN_FORWARD((short) 0b1010),
+    EN_STOP((short) 0b0000),
+    EN_LEFT((short) 0b1001),
+    EN_RIGHT((short) 0b0110);
 
     private final short value;
 

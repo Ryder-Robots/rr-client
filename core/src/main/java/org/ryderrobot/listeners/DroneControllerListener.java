@@ -63,25 +63,25 @@ public class DroneControllerListener implements ControllerListener {
         switch (i) {
             case Constants.CTRL_AXIS_XL:
                 if (axisXL != v) {
-                    handler.axisLeftX(v);
+                    handler.axisLeftX(v, controller.getAxis(Constants.CTRL_AXIS_YL));
                     axisXL = v;
                 }
                 break;
             case Constants.CTRL_AXIS_YL:
                 if (axisYL != v) {
-                    handler.axisLeftY(v);
+                    handler.axisLeftY(v, controller.getAxis(Constants.CTRL_AXIS_XL));
                     axisYL = v;
                 }
                 break;
             case Constants.CTRL_AXIS_XR:
                 if (axisXR != v) {
-                    handler.axisLeftY(v);
+                    handler.axisLeftY(v, controller.getAxis(Constants.CTRL_AXIS_YR));
                     axisXR = v;
                 }
                 break;
             case Constants.CTRL_AXIS_YR:
                 if (axisYR != v) {
-                    handler.axisRightY(v);
+                    handler.axisRightY(v, controller.getAxis(Constants.CTRL_AXIS_YR));
                     axisYR = v;
                 }
                 break;
