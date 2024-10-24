@@ -27,14 +27,27 @@ public class SkuLd001 extends ControllerHandlerBase {
      *
      * @param value position of left controller axis.
      */
+
+    /*
+     * for xValue a negative means that we the stick is facing left, positive right.
+     */
     @Override
-    public void axisLeftY(float value) {
+    public void axisLeftY(float value, float xValue) {
         L298N payload;
 
+
         if (value > 0) {
-            payload = new L298N(value, value, In.EN_FORWARD);
+            if (xValue > 0 || xValue == 0) {
+                payload = new L298N(value, value - xValue, In.EN_FORWARD);
+            } else {
+                payload = new L298N(value + xValue, value, In.EN_FORWARD);
+            }
         } else {
-            payload = new L298N(value * -1, value * -1, In.EN_BACKWARD);
+            if (xValue > 0 || xValue == 0) {
+                payload = new L298N(value * -1, (value * -1) - xValue, In.EN_BACKWARD);
+            } else {
+                payload = new L298N((value * -1) + xValue, value * -1, In.EN_BACKWARD);
+            }
         }
 
         OpU1MaVcc operation = new OpU1MaVcc(
