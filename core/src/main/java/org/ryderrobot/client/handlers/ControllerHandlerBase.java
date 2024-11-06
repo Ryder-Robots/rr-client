@@ -1,8 +1,10 @@
 package org.ryderrobot.client.handlers;
 
-import com.badlogic.gdx.utils.Json;
 import org.ryderrobot.env.Queue;
 
+/**
+ * performs any base actions for controller.
+ */
 public abstract class ControllerHandlerBase implements ControllerHandler {
     protected Queue<String> egress;
     protected Queue<String> ingress;

@@ -56,7 +56,7 @@ public interface ControllerHandler {
      * called when left axis controller is pushed up.
      *
      * @param value between -1 and 1 for movement of the Y axis
-     * @param yValue bewteen -1 and 1 for movement across the y axis
+     * @param yValue bewteen -1 and 1 for movement across the y-axis
      */
     default void axisLeftY(float value, float yValue) {
 
@@ -66,7 +66,7 @@ public interface ControllerHandler {
     /**
      * called when left axis button X plane
      * @param value between 0 and 1.
-     * @param yValue between 0 and 1 for the y axis.
+     * @param yValue between 0 and 1 for the y-axis.
      */
     default void axisRightX(float value, float yValue) {
 
