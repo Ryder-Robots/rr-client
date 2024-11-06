@@ -42,7 +42,6 @@ public class DroneDetailsScreen extends Stage implements Screen {
     public void show() {
         final Label hwmodel = new Label("", skin);
         final Label swname = new Label("", skin);
-        final Label dtype = new Label("", skin);
 
         final Label lhwmodel = new Label("hwmodel", skin);
         final Label lswname = new Label("swname", skin);
@@ -69,9 +68,24 @@ public class DroneDetailsScreen extends Stage implements Screen {
         mainTable.add(swname).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10).left();
         mainTable.row();
 
+        mainTable.add(new Label("dtype", skin)).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10).right();
+        mainTable.add(new Label(drone.getManifest().getHwmodel().getDtype().getDescription(), skin)).width(ROW_WIDTH)
+            .height(ROW_HEIGHT).pad(10).left();
+        mainTable.row();
+
+        mainTable.add(new Label("mc.port", skin)).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10).right();
+        mainTable.add(new Label(drone.getManifest().getHwmodel().getMc().getPort(), skin)).width(ROW_WIDTH)
+            .height(ROW_HEIGHT).pad(10).left();
+        mainTable.row();
+
+        mainTable.add(new Label("mc.baud", skin)).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10).right();
+        mainTable.add(new Label(drone.getManifest().getHwmodel().getMc().getBaud(), skin)).width(ROW_WIDTH)
+            .height(ROW_HEIGHT).pad(10).left();
+        mainTable.row();
+
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
-        buttonTable.setY(-200);
+        buttonTable.setY(-400);
         buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
 
         addActor(mainTable);
