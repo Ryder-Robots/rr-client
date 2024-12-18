@@ -1,39 +1,33 @@
 package org.ryderrobot.models.protocols.rrp;
 
-import org.ryderrobot.exceptions.MissingRequiredAttribute;
-
 import java.util.Optional;
 
-/**
- * RRP Events with payloads.
- */
 public class RrpEvent<P> {
-    public RrpEvent(final RrpCommands command, final P payload) {
+    public RrpEvent(RrpCommands command, P payload) {
         this.command = command;
         this.payload = Optional.of(payload);
     }
 
-    public RrpEvent(final RrpCommands command) {
+    public RrpEvent(RrpCommands command) {
         this.command = command;
-        this.payload = Optional.empty();
-    }
-
-
-    public final RrpCommands getCommand() {
-        return command;
-    }
-
-    public final P getPayload() {
-        if (payload.isEmpty()) {
-            throw new MissingRequiredAttribute("payload is not present");
-        }
-        return payload.get();
     }
 
     public boolean hasPayload() {
         return payload.isPresent();
     }
 
+    public P getPayload() {
+        P payload = null;
+        if (this.payload.isPresent()) {
+            payload = this.payload.get();
+        }
+        return payload;
+    }
+
+    public RrpCommands getCommand() {
+        return command;
+    }
+
     private final RrpCommands command;
-    private final Optional<P> payload;
+    private Optional<P> payload = Optional.empty();
 }

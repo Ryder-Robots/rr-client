@@ -2,38 +2,42 @@ package org.ryderrobot.models.protocols.rrp;
 
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.JsonWriter;
+import com.badlogic.gdx.utils.Null;
 
-import java.util.Optional;
+import java.lang.reflect.Method;
+import java.util.Map;
 
-public abstract class RrpCurator<P> implements Json.Serializer<RrpEvent<P>> {
-    @Override
-    public void write(Json json, RrpEvent<P> pRrpEvent, Class aClass) {
-        json.writeArrayStart();
-        json.writeValue("command", pRrpEvent.getCommand());
+public class RrpCurator {
 
-        if (pRrpEvent.hasPayload()) {
-            JsonValue payload = writePayload(pRrpEvent.getPayload());
-            json.writeValue("payload", payload);
-        }
-        json.writeObjectEnd();
-    }
+    RrpEvent curate(RrpRequest request) {
+        RrpEvent event = new RrpEvent(RrpCommands.MSP_NONE);
 
-    @Override
-    public RrpEvent<P> read(Json json, JsonValue jsonData, Class aClass) {
-        RrpEvent<P> event;
-        RrpCommands command = RrpCommands.valueOf(
-            jsonData.getString("command", RrpCommands.MSP_NONE.name()));
-        Optional<P> payload = Optional.empty();
-        if (jsonData.has("payload")) {
-            payload = Optional.of(readPayload(jsonData));
+        if (request.getPayload() != null) {
+            Map<String, String> payload = request.getPayload();
+            if (request.getCommand() == RrpCommands.MSP_ERROR) {
+                String message = payload.get("message");
+                event = new RrpEvent<>(RrpCommands.MSP_ERROR, new MspErrorPayload(message));
+            }
+        } else {
+            if (request.getCommand() == RrpCommands.MSP_ERROR) {
+                event = new RrpEvent<>(RrpCommands.MSP_ERROR);
+            }
         }
 
-        event = payload.map(p -> new RrpEvent<>(command, p)).orElseGet(() ->
-            new RrpEvent<>(command));
         return event;
     }
 
-    protected abstract JsonValue writePayload(P payload);
+    String toJson(RrpEvent event) {
+        Json json = new Json();
+        json.setOutputType(JsonWriter.OutputType.json);
 
-    protected abstract P readPayload(JsonValue jsonData);
+        JsonValue jsonObject = new JsonValue(JsonValue.ValueType.object);
+        jsonObject.addChild("command", new JsonValue(event.getCommand().name()));
+        if (event.hasPayload()) {
+            String s = json.toJson(event.getPayload());
+            jsonObject.addChild("payload", new JsonValue(s));
+        }
+        return jsonObject.toJson(JsonWriter.OutputType.json);
+    }
 }
