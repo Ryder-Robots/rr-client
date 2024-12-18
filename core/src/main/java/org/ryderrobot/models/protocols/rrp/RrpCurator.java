@@ -3,14 +3,16 @@ package org.ryderrobot.models.protocols.rrp;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
-import com.badlogic.gdx.utils.Null;
-
-import java.lang.reflect.Method;
 import java.util.Map;
 
 public class RrpCurator {
 
-    RrpEvent curate(RrpRequest request) {
+    public RrpEvent curate(String j) {
+        RrpRequest request = (new Json()).fromJson(RrpRequest.class, j);
+        return curate(request);
+    }
+
+    public RrpEvent curate(RrpRequest request) {
         RrpEvent event = new RrpEvent(RrpCommands.MSP_NONE);
 
         if (request.getPayload() != null) {
@@ -28,7 +30,7 @@ public class RrpCurator {
         return event;
     }
 
-    String toJson(RrpEvent event) {
+    public String toJson(RrpEvent event) {
         Json json = new Json();
         json.setOutputType(JsonWriter.OutputType.json);
 
