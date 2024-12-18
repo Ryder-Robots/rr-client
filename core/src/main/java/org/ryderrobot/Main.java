@@ -1,34 +1,49 @@
 package org.ryderrobot;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import org.ryderrobot.constants.Constants;
+import org.ryderrobot.drones.Drone;
+import org.ryderrobot.drones.VirtualDrone;
+import org.ryderrobot.screens.ScreensProcessor;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
-    private SpriteBatch batch;
-    private Texture image;
+    private Texture backgroundText;
+    private Viewport viewPort;
+    private OrthographicCamera camera;
+    private Drone drone = new VirtualDrone();
+    private ScreensProcessor screensProcessor;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        image = new Texture("libgdx.png");
+        TextureAtlas atlas = new TextureAtlas(Constants.UI_SKIN_ATLAS);
+        Skin skin = new Skin(Constants.UI_SKIN, atlas);
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        viewPort = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
+        viewPort.apply();
+        backgroundText = new Texture("background.png");
+        screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone);
+        screensProcessor.get().show();
     }
 
     @Override
     public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.draw(image, 140, 210);
-        batch.end();
+        if (screensProcessor.hasChanged()) {
+            screensProcessor.get().show();
+        }
+        screensProcessor.get().render(0);
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
-        image.dispose();
+        backgroundText.dispose();
+        screensProcessor.dispose();
     }
 }
