@@ -8,7 +8,7 @@ import org.ryderrobot.net.SocketClient;
 /**
  * Interface for drone.
  */
-public interface Drone {
+public interface Drone extends Runnable {
 
     /**
      * gets current socket client, if set.
@@ -57,4 +57,39 @@ public interface Drone {
      * Called by the controller listener when an action has been taken.
      */
     void handlerControllerEvent(ControllerRequest handler);
+
+    /**
+     * Sets identity
+     *
+     * @param ident drone identity
+     */
+    void setIdent(MspIdentPayload ident);
+
+    /**
+     * Sets socket client to use.
+     *
+     * @param socketClient socket client.
+     */
+    void setSocketClient(final SocketClient socketClient);
+
+    /**
+     * Returns true once the first identity task is sent back from drone.
+     *
+     * @return true if identity has been set.
+     */
+    boolean isIdentitySet();
+
+    /**
+     * Indicates that the drone is running.
+     *
+     * @return true if drone is running.
+     */
+    boolean isRunning();
+
+    /**
+     * When set to false will terminate loop.
+     *
+     * @param value true if program is not running.
+     */
+    void setIsRunning(boolean value);
 }

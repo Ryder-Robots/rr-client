@@ -1,6 +1,7 @@
 package org.ryderrobot;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,8 +23,8 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
-        TextureAtlas atlas = new TextureAtlas(Constants.UI_SKIN_ATLAS);
-        Skin skin = new Skin(Constants.UI_SKIN, atlas);
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN_ATLAS));
+        Skin skin = new Skin( Gdx.files.internal(Constants.UI_SKIN), atlas);
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         viewPort = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
