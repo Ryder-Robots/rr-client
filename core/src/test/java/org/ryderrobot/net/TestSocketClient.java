@@ -1,4 +1,4 @@
-package org.ryderrobotnet;
+package org.ryderrobot.net;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ public class TestSocketClient {
 
     @Test
     public void shouldCreateConnection() {
-        SocketClient socketClient = new SocketClient();
+        SocketClient socketClient = new TcpSocketClient();
         socketClient.connect("192.168.1.35", 8081);
 
         assertTrue(socketClient.isConnected());
