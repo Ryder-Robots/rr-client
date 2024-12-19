@@ -19,4 +19,18 @@ public class Constants {
     // UI Objects
     public static final int ROW_HEIGHT = 60;
     public static final int ROW_WIDTH = 300;
+
+    // Queues
+    public static int MAX_QUEUE_COUNT = 100;
+    public static int THREAD_SLEEP_TIME = 10;
+
+    // Controller constants
+    public static final int CTRL_SCROLL_UP = 12;
+    public static final int CTRL_SCROLL_DOWN = 11;
+    public static final int CTRL_SCROLL_LEFT = 13;
+    public static final int CTRL_X_BUTTON = 0;
+    public static final int CTRL_AXIS_XL = 0;
+    public static final int CTRL_AXIS_YL = 1;
+    public static final int CTRL_AXIS_XR = 2;
+    public static final int CTRL_AXIS_YR = 3;
 }

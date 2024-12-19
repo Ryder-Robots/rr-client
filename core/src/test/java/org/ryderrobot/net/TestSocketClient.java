@@ -1,4 +1,4 @@
-package org.ryderrobotnet;
+package org.ryderrobot.net;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
