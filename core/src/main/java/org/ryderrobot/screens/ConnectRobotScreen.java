@@ -16,6 +16,10 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.constants.Constants;
 import org.ryderrobot.drones.Drone;
 import com.badlogic.gdx.Gdx;
+import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
+import org.ryderrobot.models.protocols.rrp.RrpCommands;
+import org.ryderrobot.models.protocols.rrp.RrpEvent;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -83,11 +87,12 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                             Thread thread = new Thread(drone);
                             thread.setDaemon(true);
                             thread.start();
-
                             while(!drone.isIdentitySet()) {
                                 render(10);
                                 Thread.sleep(10);
                             }
+
+                            //TODO: call drone factory here.
                         }
                     } else {
                         throw new RuntimeException("missing required fields");
