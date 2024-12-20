@@ -20,6 +20,13 @@ public class RrpCurator {
             if (request.getCommand() == RrpCommands.MSP_ERROR) {
                 String message = payload.get("message");
                 event = new RrpEvent<>(RrpCommands.MSP_ERROR, new MspErrorPayload(message));
+            } else if (request.getCommand() == RrpCommands.MSP_IDENT) {
+                event = new RrpEvent<>(RrpCommands.MSP_IDENT, new MspIdentPayload(
+                    Integer.parseInt(request.getPayload().get("version")),
+                    MultiType.valueOf(request.getPayload().get("multitype")),
+                    MspVersion.valueOf(request.getPayload().get("msp_version")),
+                    Integer.parseInt(request.getPayload().get("capability"))
+                ));
             }
         } else {
             if (request.getCommand() == RrpCommands.MSP_ERROR) {

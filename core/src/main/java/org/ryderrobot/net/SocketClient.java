@@ -32,5 +32,5 @@ public interface SocketClient {
 
     RrpEvent recv() throws RrpAbstractException;
 
-    public void close();
+    void close();
 }
