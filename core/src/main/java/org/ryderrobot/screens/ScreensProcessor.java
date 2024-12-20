@@ -29,6 +29,8 @@ public class ScreensProcessor {
 
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this, drone));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this, drone));
+        screens.add(new ManualFlightScreen());
+        screens.add(new DroneDetailsScreen(viewPort, backgroundText, camera, skin, this, drone));
     }
 
     public void setCurrScreen(int screen) {
