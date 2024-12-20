@@ -75,7 +75,11 @@ public abstract class AbstractDrone implements Drone {
                     socketClient.send(event);
                 }
             }
-            RrpEvent<?> statusRequest = new RrpEvent<>(RrpCommands.MSP_STATUS);
+            RrpCommands command = RrpCommands.MSP_STATUS;
+            if(isIdentSet) {
+                command = RrpCommands.MSP_IDENT;
+            }
+            RrpEvent<?> statusRequest = new RrpEvent<>(command);
             socketClient.send(statusRequest);
 
             if (socketClient.available() > 0) {
@@ -124,7 +128,6 @@ public abstract class AbstractDrone implements Drone {
 
     private final BlockingQueue<RrpEvent<?>> outbound = new LinkedBlockingQueue<>();
     private SocketClient socketClient;
-    private boolean connected = false;
 
     // Gets reset periodically.
     private MspIdentPayload ident = new MspIdentPayload(

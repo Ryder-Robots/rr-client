@@ -16,7 +16,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class TestDrone {
 
-    private SocketClient socketClient = mock(SocketClient.class);
+    private final SocketClient socketClient = mock(SocketClient.class);
 
     @Captor
     private ArgumentCaptor<RrpEvent<?>> argumentCaptor;
@@ -30,7 +30,6 @@ public class TestDrone {
             0
         ));
         assertInstanceOf(VirtualDrone.class, drone);
-        assertFalse(drone.isConnected());
         assertFalse(drone.isIdentitySet());
     }
 
