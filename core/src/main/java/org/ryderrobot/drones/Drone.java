@@ -31,13 +31,6 @@ public interface Drone extends Runnable {
     boolean isConnected();
 
     /**
-     * set to true if the drone is connected by an external entity.
-     *
-     * @param connected true or false.
-     */
-    void setIsConnected(boolean connected);
-
-    /**
      * Returns payload indicated the drones identity, can be used with factory class
      * to get drone specific implementation.
      *

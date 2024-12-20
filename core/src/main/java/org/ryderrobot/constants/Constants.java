@@ -19,7 +19,8 @@ public class Constants {
 
     // Queues
     public static int MAX_QUEUE_COUNT = 100;
-    public static int THREAD_SLEEP_TIME = 10;
+
+    public static String CONNECTION_DETAILS_FL = "etc/droneConn.json";
 
     // Controller constants
     public static final int CTRL_SCROLL_UP = 12;

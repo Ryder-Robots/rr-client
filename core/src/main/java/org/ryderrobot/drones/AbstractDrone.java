@@ -7,6 +7,10 @@ import org.ryderrobot.net.SocketClient;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import static org.ryderrobot.constants.Constants.MAX_QUEUE_COUNT;
+import static org.ryderrobot.models.protocols.rrp.MspVersion.VIRTUAL;
+import static org.ryderrobot.models.protocols.rrp.MultiType.NONE;
+
 public abstract class AbstractDrone implements Drone {
 
     @Override
@@ -21,18 +25,18 @@ public abstract class AbstractDrone implements Drone {
 
     @Override
     public void dispose() {
-        socketClient.close();
+        if (isConnected()) {
+            socketClient.close();
+            setIsRunning(false);
+            setIdent(new MspIdentPayload(0, NONE, VIRTUAL, 0));
+        }
     }
 
     @Override
     public final boolean isConnected() {
-        return connected;
+        return socketClient.isConnected();
     }
 
-    @Override
-    public final void setIsConnected(boolean connected) {
-        this.connected = connected;
-    }
 
     @Override
     public final MspIdentPayload getIdentity() {
@@ -65,7 +69,7 @@ public abstract class AbstractDrone implements Drone {
     public void run() {
         while(isRunning) {
             if (!outbound.isEmpty()) {
-                int count = Math.min(Constants.MAX_QUEUE_COUNT, outbound.size());
+                int count = Math.min(MAX_QUEUE_COUNT, outbound.size());
                 for (int i = 0; i < count; i++) {
                     RrpEvent<?> event = outbound.poll();
                     socketClient.send(event);
@@ -74,11 +78,9 @@ public abstract class AbstractDrone implements Drone {
             RrpEvent<?> statusRequest = new RrpEvent<>(RrpCommands.MSP_STATUS);
             socketClient.send(statusRequest);
 
-            int count = socketClient.available();
-            if (count > 0) {
-                count = Math.min(Constants.MAX_QUEUE_COUNT, count);
-                for (int i = 0; i < count; i++) {
-                    RrpEvent<?> event = socketClient.recv();
+            if (socketClient.available() > 0) {
+                for (int i = 0; i < MAX_QUEUE_COUNT; i++) {
+                    RrpEvent event = socketClient.recv();
 
                     if (!event.hasPayload()) {
                         continue;
@@ -94,6 +96,10 @@ public abstract class AbstractDrone implements Drone {
                             break;
                         default:
                             System.out.println("ignoring command:" + event.getCommand());
+                    }
+
+                    if (socketClient.available() <= 0){
+                        break;
                     }
                 }
             }

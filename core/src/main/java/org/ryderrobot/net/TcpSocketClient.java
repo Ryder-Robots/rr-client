@@ -74,7 +74,7 @@ public class TcpSocketClient implements SocketClient {
 
             char c = '0';
             while (c != Constants.EOR) {
-                c = (char) (buffer.read() + '0');
+                c = (char) (buffer.read());
                 if (c != EOR) {
                     sb.append(c);
                 }

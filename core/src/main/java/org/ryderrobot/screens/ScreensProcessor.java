@@ -28,10 +28,7 @@ public class ScreensProcessor {
         Drone drone) {
 
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this, drone));
-        //TODO: the following needs to be implemented.
-//        screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, this, drone));
-//        screens.add(new DroneIdentScreen(viewPort, backgroundText, camera, skin, this, drone));
-//        screens.add(new DroneStatusScreen(viewPort, backgroundText, camera, skin, this, drone));
+        screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this, drone));
     }
 
     public void setCurrScreen(int screen) {
