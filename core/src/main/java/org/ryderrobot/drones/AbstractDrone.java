@@ -1,6 +1,5 @@
 package org.ryderrobot.drones;
 
-import org.ryderrobot.constants.Constants;
 import org.ryderrobot.models.protocols.rrp.*;
 import org.ryderrobot.net.SocketClient;
 

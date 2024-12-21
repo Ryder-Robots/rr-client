@@ -16,10 +16,7 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.constants.Constants;
 import org.ryderrobot.drones.Drone;
 import com.badlogic.gdx.Gdx;
-import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
-import org.ryderrobot.models.protocols.rrp.RrpCommands;
-import org.ryderrobot.models.protocols.rrp.RrpEvent;
-
+import org.ryderrobot.drones.DroneFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +30,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private final Drone drone;
+    private Drone drone;
     private final Stage stage;
 
     /**
@@ -91,8 +88,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                                 render(10);
                                 Thread.sleep(10);
                             }
-
-                            //TODO: call drone factory here.
+                            drone = DroneFactory.createDrone(drone.getIdentity());
                         }
                     } else {
                         throw new RuntimeException("missing required fields");

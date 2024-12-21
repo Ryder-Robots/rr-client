@@ -17,23 +17,33 @@ public class RrpCurator {
 
         if (request.getPayload() != null) {
             Map<String, String> payload = request.getPayload();
-            if (request.getCommand() == RrpCommands.MSP_ERROR) {
-                String message = payload.get("message");
-                event = new RrpEvent<>(RrpCommands.MSP_ERROR, new MspErrorPayload(message));
-            } else if (request.getCommand() == RrpCommands.MSP_IDENT) {
-                event = new RrpEvent<>(RrpCommands.MSP_IDENT, new MspIdentPayload(
-                    Integer.parseInt(request.getPayload().get("version")),
-                    MultiType.valueOf(request.getPayload().get("multitype")),
-                    MspVersion.valueOf(request.getPayload().get("msp_version")),
-                    Integer.parseInt(request.getPayload().get("capability"))
-                ));
+            switch (request.getCommand()) {
+                case MSP_ERROR:
+                    String message = payload.get("message");
+                    event = new RrpEvent<>(RrpCommands.MSP_ERROR, new MspErrorPayload(message));
+                    break;
+                case MSP_IDENT:
+                    event = new RrpEvent<>(RrpCommands.MSP_IDENT, new MspIdentPayload(
+                        Integer.parseInt(request.getPayload().get("version")),
+                        MultiType.valueOf(request.getPayload().get("multitype")),
+                        MspVersion.valueOf(request.getPayload().get("msp_version")),
+                        Integer.parseInt(request.getPayload().get("capability"))
+                    ));
+                    break;
+                case MSP_STATUS:
+                    event = new RrpEvent<>(RrpCommands.MSP_STATUS, new MspStatus(
+                        Integer.parseInt(request.getPayload().get("cycletime")),
+                        Integer.parseInt(request.getPayload().get("i2c_errors_count")),
+                        Integer.parseInt(request.getPayload().get("sensor")),
+                        Integer.parseInt(request.getPayload().get("flag")),
+                        Integer.parseInt(request.getPayload().get("current_set"))
+                    ));
             }
         } else {
             if (request.getCommand() == RrpCommands.MSP_ERROR) {
                 event = new RrpEvent<>(RrpCommands.MSP_ERROR);
             }
         }
-
         return event;
     }
 
