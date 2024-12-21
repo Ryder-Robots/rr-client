@@ -12,8 +12,6 @@ import org.ryderrobot.constants.Constants;
 import org.ryderrobot.drones.Drone;
 import org.ryderrobot.drones.VirtualDrone;
 import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
-import org.ryderrobot.models.protocols.rrp.MspVersion;
-import org.ryderrobot.models.protocols.rrp.MultiType;
 import org.ryderrobot.net.SocketClient;
 import org.ryderrobot.net.TcpSocketClient;
 import org.ryderrobot.screens.ScreensProcessor;

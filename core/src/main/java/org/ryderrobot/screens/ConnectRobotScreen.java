@@ -1,4 +1,4 @@
-package org.ryderrobot.screens;
+    package org.ryderrobot.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,9 +16,9 @@ import com.github.czyzby.kiwi.util.common.Strings;
 import org.ryderrobot.constants.Constants;
 import org.ryderrobot.drones.Drone;
 import com.badlogic.gdx.Gdx;
+import org.ryderrobot.drones.DroneFactory;
 import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
-import org.ryderrobot.models.protocols.rrp.RrpCommands;
-import org.ryderrobot.models.protocols.rrp.RrpEvent;
+import org.ryderrobot.net.SocketClient;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private final Drone drone;
+    private Drone drone;
     private final Stage stage;
 
     /**
@@ -91,8 +91,11 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                                 render(10);
                                 Thread.sleep(10);
                             }
-
-                            //TODO: call drone factory here.
+                            SocketClient socketClient = drone.getSocketClient();
+                            MspIdentPayload ident = drone.getIdentity();
+                            drone = DroneFactory.createDrone(drone.getIdentity());
+                            drone.setSocketClient(socketClient);
+                            drone.setIdent(ident);
                         }
                     } else {
                         throw new RuntimeException("missing required fields");
