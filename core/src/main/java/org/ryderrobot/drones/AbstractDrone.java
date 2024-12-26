@@ -75,7 +75,7 @@ public abstract class AbstractDrone implements Drone {
                 }
             }
             RrpCommands command = RrpCommands.MSP_STATUS;
-            if(isIdentSet) {
+            if(!isIdentSet) {
                 command = RrpCommands.MSP_IDENT;
             }
             RrpEvent<?> statusRequest = new RrpEvent<>(command);
