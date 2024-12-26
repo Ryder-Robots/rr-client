@@ -57,23 +57,23 @@ public class StatusScreen extends Stage implements Screen  {
         int sensors = drone.getStatus().getSensor();
         mainTable.center();
         mainTable.add(new Label("baro: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(sensors & BARO), skin))
+        mainTable.add(new TextField(String.valueOf((sensors & BARO) == BARO), skin))
             .width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).left();
 
         mainTable.add(new Label("mag: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(sensors & MAG), skin))
+        mainTable.add(new TextField(String.valueOf((sensors & MAG) == MAG), skin))
             .width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).left();
 
         mainTable.add(new Label("gps: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(sensors & GPS), skin))
+        mainTable.add(new TextField(String.valueOf((sensors & GPS) == GPS), skin))
             .width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).left();
 
         mainTable.add(new Label("sonar: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(sensors & SONAR), skin))
+        mainTable.add(new TextField(String.valueOf((sensors & SONAR) == SONAR), skin))
             .width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).left();
 
         mainTable.add(new Label("camera: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(sensors & CAMERA), skin))
+        mainTable.add(new TextField(String.valueOf((sensors & CAMERA) == CAMERA), skin))
             .width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).left();
         mainTable.row();
 
@@ -103,7 +103,7 @@ public class StatusScreen extends Stage implements Screen  {
         String status = "INITILIZING";
         String[] statusS = {"RELOADING", "ERROR", "INITILIZING", "SHUTTING_DOWN", "TERMINATED", "ACTIVE"};
         for (int s = 0; s < statusA.length; s++) {
-            if ((statusA[s] & flags) == 1) {
+            if ((statusA[s] & flags) == statusA[s]) {
                 status = statusS[s];
                 break;
             }
