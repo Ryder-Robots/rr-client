@@ -25,6 +25,6 @@ public enum MultiType {
     HEX6H,
     SINGLECOPTER,
     DUALCOPTER,
-    LANDDRONE_2M,
+    LANDDRONE_2W,
     LANDDRONE_4W,
 }
