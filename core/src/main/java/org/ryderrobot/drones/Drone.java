@@ -39,6 +39,13 @@ public interface Drone extends Runnable {
     MspIdentPayload getIdentity();
 
     /**
+     * Sets drone status
+     *
+     * @param status current status.
+     */
+    void setStatus(MspStatus status);
+
+    /**
      * current status of connected drone, can be used to determine if the drone is armed,
      * or if the drone has software or hardware faults.
      *
@@ -71,6 +78,13 @@ public interface Drone extends Runnable {
      * @return true if identity has been set.
      */
     boolean isIdentitySet();
+
+    /**
+     * Marks isIdent set as true.
+     *
+     * @param isSet true if set.
+     */
+    void setIsIdentSet(boolean isSet);
 
     /**
      * Indicates that the drone is running.

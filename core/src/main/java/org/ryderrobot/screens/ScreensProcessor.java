@@ -63,4 +63,8 @@ public class ScreensProcessor {
     public Drone getDrone() {
         return drone;
     }
+
+    public void setDrone(Drone drone) {
+        this.drone = drone;
+    }
 }

@@ -43,8 +43,18 @@ public abstract class AbstractDrone implements Drone {
     }
 
     @Override
+    public void setStatus(MspStatus status) {
+        this.status = status;
+    }
+
+    @Override
     public final MspStatus getStatus() {
         return status;
+    }
+
+    @Override
+    public void setIsIdentSet(boolean isSet) {
+        isIdentSet = isSet;
     }
 
     @Override

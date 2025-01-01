@@ -93,9 +93,13 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                             }
                             SocketClient socketClient = drone.getSocketClient();
                             MspIdentPayload ident = drone.getIdentity();
-                            drone = DroneFactory.createDrone(drone.getIdentity());
-                            drone.setSocketClient(socketClient);
-                            drone.setIdent(ident);
+
+                            Drone cdrone = DroneFactory.createDrone(drone.getIdentity());
+                            cdrone.setSocketClient(socketClient);
+                            cdrone.setStatus(drone.getStatus());
+                            cdrone.setIdent(ident);
+                            cdrone.setIsIdentSet(drone.isIdentitySet());
+                            screensProcessor.setDrone(cdrone);
                         }
                     } else {
                         throw new RuntimeException("missing required fields");
