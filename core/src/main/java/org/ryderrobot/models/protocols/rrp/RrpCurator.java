@@ -3,9 +3,14 @@ package org.ryderrobot.models.protocols.rrp;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.JsonWriter;
+import org.ryderrobot.exceptions.MissingSerdeException;
+import org.ryderrobot.exceptions.RrpIoException;
+
 import java.util.Map;
+import java.util.Optional;
 
 public class RrpCurator {
+    private final SerdeFactory serdeFactory = new SerdeFactory();
 
     public RrpEvent curate(String j) {
         RrpRequest request = (new Json()).fromJson(RrpRequest.class, j);
@@ -53,9 +58,14 @@ public class RrpCurator {
 
         JsonValue jsonObject = new JsonValue(JsonValue.ValueType.object);
         jsonObject.addChild("command", new JsonValue(event.getCommand().name()));
+
         if (event.hasPayload()) {
-            String s = json.toJson(event.getPayload());
-            jsonObject.addChild("payload", new JsonValue(s));
+            RrpSerde serde = serdeFactory.getSerde(event.getCommand());
+            if (Optional.ofNullable(serde).isEmpty()) {
+                throw new MissingSerdeException("no available serde");
+            }
+            JsonValue payload = serde.serialize(event.getPayload());
+            jsonObject.addChild("payload", payload);
         }
         return jsonObject.toJson(JsonWriter.OutputType.json);
     }
