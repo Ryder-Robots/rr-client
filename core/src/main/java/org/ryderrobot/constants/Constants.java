@@ -26,6 +26,7 @@ public class Constants {
     public static final int CTRL_SCROLL_UP = 12;
     public static final int CTRL_SCROLL_DOWN = 11;
     public static final int CTRL_SCROLL_LEFT = 13;
+    public static final int CTRL_SCROLL_RIGHT = 14;
     public static final int CTRL_X_BUTTON = 0;
     public static final int CTRL_AXIS_XL = 0;
     public static final int CTRL_AXIS_YL = 1;
