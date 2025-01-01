@@ -39,7 +39,7 @@ public class StatusScreen extends Stage implements Screen  {
     private final int TERMINATED     = 32;
 
     StatusScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin,
-                 ScreensProcessor screensProcessor, Drone drone) {
+                 ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
