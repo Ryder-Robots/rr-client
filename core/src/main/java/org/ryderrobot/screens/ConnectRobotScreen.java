@@ -100,6 +100,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                             cdrone.setStatus( screensProcessor.getDrone().getStatus());
                             cdrone.setIdent(ident);
                             cdrone.setIsIdentSet( screensProcessor.getDrone().isIdentitySet());
+                            cdrone.setIsRunning(true);
                             screensProcessor.setDrone(cdrone);
 
                             thread = new Thread( screensProcessor.getDrone());
