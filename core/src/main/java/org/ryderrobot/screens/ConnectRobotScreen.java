@@ -33,7 +33,6 @@ public class ConnectRobotScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private Drone drone;
     private final Stage stage;
 
     /**
@@ -46,14 +45,13 @@ public class ConnectRobotScreen extends Stage implements Screen  {
      * @param screensProcessor  connect to other screens.
      */
     public ConnectRobotScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin,
-                              ScreensProcessor screensProcessor, Drone drone) {
+                              ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
         this.camera = camera;
         this.skin = skin;
         this.screensProcessor = screensProcessor;
-        this.drone = drone;
         this.stage = this;
     }
 
@@ -81,21 +79,33 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                 Optional<Exception> whatHappened = Optional.empty();
                 try {
                     if (Strings.isNotEmpty(addrTextField.getText())) {
-                        drone.getSocketClient().connect(addrTextField.getText(),
+                        screensProcessor.getDrone().getSocketClient().connect(addrTextField.getText(),
                             Integer.parseInt(portTxtField.getText()));
-                        if (drone.isConnected()) {
-                            Thread thread = new Thread(drone);
-                            thread.setDaemon(true);
+                        if ( screensProcessor.getDrone().isConnected()) {
+                            Thread thread = new Thread( screensProcessor.getDrone());
                             thread.start();
-                            while(!drone.isIdentitySet()) {
+                            while(!screensProcessor.getDrone().isIdentitySet()) {
                                 render(10);
                                 Thread.sleep(10);
                             }
-                            SocketClient socketClient = drone.getSocketClient();
-                            MspIdentPayload ident = drone.getIdentity();
-                            drone = DroneFactory.createDrone(drone.getIdentity());
-                            drone.setSocketClient(socketClient);
-                            drone.setIdent(ident);
+                            // Shutdown virtual drone.
+                            screensProcessor.getDrone().setIsRunning(false);
+                            thread.join();
+
+                            SocketClient socketClient =  screensProcessor.getDrone().getSocketClient();
+                            MspIdentPayload ident =  screensProcessor.getDrone().getIdentity();
+
+                            Drone cdrone = DroneFactory.createDrone( screensProcessor.getDrone().getIdentity());
+                            cdrone.setSocketClient(socketClient);
+                            cdrone.setStatus( screensProcessor.getDrone().getStatus());
+                            cdrone.setIdent(ident);
+                            cdrone.setIsIdentSet( screensProcessor.getDrone().isIdentitySet());
+                            cdrone.setIsRunning(true);
+                            screensProcessor.setDrone(cdrone);
+
+                            thread = new Thread( screensProcessor.getDrone());
+                            thread.setDaemon(true);
+                            thread.start();
                         }
                     } else {
                         throw new RuntimeException("missing required fields");
@@ -104,7 +114,7 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                     whatHappened = Optional.of(e);
                 }
 
-                if (drone.isConnected()) {
+                if ( screensProcessor.getDrone().isConnected()) {
                     screensProcessor.setCurrScreen(0);
                 } else {
                     String err = "unknown error";

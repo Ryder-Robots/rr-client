@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.constants.Constants;
-import org.ryderrobot.drones.Drone;
 
 import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
 import static org.ryderrobot.constants.Constants.ROW_WIDTH;
@@ -23,18 +22,16 @@ public class DroneDetailsScreen  extends Stage implements Screen {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private final Drone drone;
     private final Stage stage;
 
     public DroneDetailsScreen(Viewport viewport, Texture backgroundTexture, Camera camera, Skin skin,
-                              ScreensProcessor screensProcessor, Drone drone) {
+                              ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
         this.camera = camera;
         this.skin = skin;
         this.screensProcessor = screensProcessor;
-        this.drone = drone;
         this.stage = this;
     }
 
@@ -45,23 +42,23 @@ public class DroneDetailsScreen  extends Stage implements Screen {
         mainTable.center();
         mainTable.add(new Label("version: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add( new TextField(
-            String.valueOf(drone.getIdentity().getVersion()), skin)
+            String.valueOf(screensProcessor.getDrone().getIdentity().getVersion()), skin)
         ).width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 
         mainTable.add(new Label("multitype: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(drone.getIdentity().getMultitype().name(), skin))
+        mainTable.add(new TextField(screensProcessor.getDrone().getIdentity().getMultitype().name(), skin))
             .width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 
         mainTable.add(new Label("mspversion: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(drone.getIdentity().getMspversion().name(), skin))
+        mainTable.add(new TextField(screensProcessor.getDrone().getIdentity().getMspversion().name(), skin))
             .width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 
         mainTable.add(new Label("capability: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add(
-            new TextField(String.valueOf(drone.getIdentity().getCapability()), skin)
+            new TextField(String.valueOf(screensProcessor.getDrone().getIdentity().getCapability()), skin)
         ).width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 

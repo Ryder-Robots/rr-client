@@ -26,7 +26,6 @@ public class MainMenuScreen extends Stage implements Screen {
     private final Texture backgroundTexture;
     private final Camera camera;
     private final ScreensProcessor screensProcessor;
-    private final Drone drone;
     private final Stage stage;
 
     final String[] menuItems = {
@@ -50,7 +49,7 @@ public class MainMenuScreen extends Stage implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (drone.isConnected()) {
+                if (screensProcessor.getDrone().isConnected()) {
                     screensProcessor.setCurrScreen(ScreensProcessor.SCR_MAN_FLIGHT);
                 } else {
                     final Dialog dialog = new Dialog("not connected", skin);
@@ -63,7 +62,7 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (drone.isConnected()) {
+                if (screensProcessor.getDrone().isConnected()) {
                     screensProcessor.setCurrScreen(ScreensProcessor.SCR_IDENT);
                 } else {
                     final Dialog dialog = new Dialog("not connected", skin);
@@ -78,7 +77,7 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (drone.isConnected()) {
+                if (screensProcessor.getDrone().isConnected()) {
                     screensProcessor.setCurrScreen(ScreensProcessor.SCR_STATUS);
                 } else {
                     final Dialog dialog = new Dialog("not connected", skin);
@@ -93,13 +92,13 @@ public class MainMenuScreen extends Stage implements Screen {
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                drone.dispose();
+                screensProcessor.getDrone().dispose();
             }
         },
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                drone.dispose();
+                screensProcessor.getDrone().dispose();
                 Gdx.app.exit();
             }
         }, // Exit
@@ -108,14 +107,13 @@ public class MainMenuScreen extends Stage implements Screen {
     private final Skin skin;
 
     public MainMenuScreen(Viewport viewport, Texture backgroundTexture, Camera camera,
-                          Skin skin, ScreensProcessor screensProcessor, Drone drone) {
+                          Skin skin, ScreensProcessor screensProcessor) {
         super(viewport, new SpriteBatch());
         this.viewPort = viewport;
         this.backgroundTexture = backgroundTexture;
         this.camera = camera;
         this.skin = skin;
         this.screensProcessor = screensProcessor;
-        this.drone = drone;
         this.stage = this;
     }
 
@@ -179,6 +177,6 @@ public class MainMenuScreen extends Stage implements Screen {
 
     @Override
     public void dispose() {
-        drone.dispose();
+        screensProcessor.getDrone().dispose();
     }
 }
