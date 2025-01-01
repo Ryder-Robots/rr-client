@@ -13,6 +13,7 @@ public class ScreensProcessor {
     private int currScreen = 0;
     private boolean changed = false;
     private final Array<Screen> screens = new Array<>(true, 2);
+    private Drone drone;
 
     public static int SCR_MM = 0;
     public static int SCR_CONNECT = 1;
@@ -27,6 +28,7 @@ public class ScreensProcessor {
         Skin skin,
         Drone drone) {
 
+        this.drone = drone;
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this, drone));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this, drone));
         screens.add(new ManualFlightScreen());
@@ -56,5 +58,9 @@ public class ScreensProcessor {
         for (Screen s : screens) {
             s.dispose();
         }
+    }
+
+    public Drone getDrone() {
+        return drone;
     }
 }

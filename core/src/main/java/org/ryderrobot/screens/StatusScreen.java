@@ -23,7 +23,6 @@ public class StatusScreen extends Stage implements Screen  {
     private final Camera camera;
     private final Skin skin;
     private final ScreensProcessor screensProcessor;
-    private final Drone drone;
     private final Stage stage;
 
     private final int BARO  =0b000000000000001;  // Barometer
@@ -47,14 +46,13 @@ public class StatusScreen extends Stage implements Screen  {
         this.camera = camera;
         this.skin = skin;
         this.screensProcessor = screensProcessor;
-        this.drone = drone;
         this.stage = this;
     }
 
     private Table createSensorTable() {
         Table mainTable = new Table();
         mainTable.setFillParent(true);
-        int sensors = drone.getStatus().getSensor();
+        int sensors = screensProcessor.getDrone().getStatus().getSensor();
         mainTable.center();
         mainTable.add(new Label("baro: ", skin)).right().width(((float)ROW_WIDTH)/4).height(ROW_HEIGHT).pad(10);
         mainTable.add(new TextField(String.valueOf((sensors & BARO) == BARO), skin))
@@ -89,16 +87,16 @@ public class StatusScreen extends Stage implements Screen  {
 
         mainTable.add(new Label("cycle time: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
         mainTable.add( new TextField(
-            String.valueOf(drone.getStatus().getCycletime()), skin)
+            String.valueOf(screensProcessor.getDrone().getStatus().getCycletime()), skin)
         ).width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 
         mainTable.add(new Label("errors count: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
-        mainTable.add(new TextField(String.valueOf(drone.getStatus().getI2c_errors_count()), skin))
+        mainTable.add(new TextField(String.valueOf(screensProcessor.getDrone().getStatus().getI2c_errors_count()), skin))
             .width(ROW_WIDTH).height(ROW_HEIGHT).left();
         mainTable.row();
 
-        int flags = drone.getStatus().getFlag();
+        int flags = screensProcessor.getDrone().getStatus().getFlag();
         int[] statusA = {RELOADING, ERROR, INITILIZING, SHUTTING_DOWN, TERMINATED, ACTIVE};
         String status = "INITILIZING";
         String[] statusS = {"RELOADING", "ERROR", "INITILIZING", "SHUTTING_DOWN", "TERMINATED", "ACTIVE"};
