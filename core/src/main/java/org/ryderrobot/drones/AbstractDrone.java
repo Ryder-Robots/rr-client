@@ -108,7 +108,7 @@ public abstract class AbstractDrone implements Drone {
                             setIdentSet(true);
                             break;
                         default:
-                            System.out.println("ignoring command:" + event.getCommand());
+                            handleEvent(event);
                     }
 
                     if (socketClient.available() <= 0){

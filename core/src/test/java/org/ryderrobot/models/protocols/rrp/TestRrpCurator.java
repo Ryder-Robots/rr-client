@@ -1,7 +1,5 @@
 package org.ryderrobot.models.protocols.rrp;
 
-
-import com.badlogic.gdx.utils.Json;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,10 +9,8 @@ public class TestRrpCurator {
 
     @Test
     void shouldDeserializeWithPayload() {
-        String j = "{\"command\":\"MSP_ERROR\", \"payload\":{\"message\":\"test this\"}}";
-        Json json = new Json();
-        RrpRequest request = json.fromJson(RrpRequest.class, j);
-        RrpEvent<MspErrorPayload> event = curator.curate(request);
+        String  j = "{\"command\":\"MSP_ERROR\", \"payload\":{\"message\":\"test this\"}}";
+        RrpEvent<MspErrorPayload> event = curator.curate(j);
 
         assertTrue(event.hasPayload());
         assertEquals("test this", event.getPayload().getMessage());
@@ -23,9 +19,7 @@ public class TestRrpCurator {
     @Test
     void shouldDeserializeWithoutPayload() {
         String j = "{\"command\":\"MSP_ERROR\"}";
-        Json json = new Json();
-        RrpRequest request = json.fromJson(RrpRequest.class, j);
-        RrpEvent<MspErrorPayload> event = curator.curate(request);
+        RrpEvent<MspErrorPayload> event = curator.curate(j);
         assertFalse(event.hasPayload());
     }
 

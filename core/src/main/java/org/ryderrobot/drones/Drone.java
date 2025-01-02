@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.ryderrobot.models.controllers.ControllerRequest;
 import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
 import org.ryderrobot.models.protocols.rrp.MspStatus;
+import org.ryderrobot.models.protocols.rrp.RrpEvent;
 import org.ryderrobot.net.SocketClient;
 
 import java.util.ArrayList;
@@ -112,5 +113,14 @@ public interface Drone extends Runnable {
      */
     default List<Actor> getScreenActors() {
         return new ArrayList<>();
+    }
+
+    /**
+     * Overload method to handle colmmands.
+     *
+     * @param event current event
+     */
+    default void handleEvent(RrpEvent event) {
+        System.out.println("ignoring command:" + event.getCommand());
     }
 }
