@@ -11,7 +11,8 @@ public class SerdeFactory {
         RrpCommands.MSP_SET_MOTOR_HBRIDGE, new MspHbridgeSerde(),
         RrpCommands.MSP_ERROR, new MspErrorSerde(),
         RrpCommands.MSP_IDENT, new MspIdentSerde(),
-        RrpCommands.MSP_STATUS, new MspStatusSerde()
+        RrpCommands.MSP_STATUS, new MspStatusSerde(),
+        RrpCommands.MSP_MODE, new MspModeSerde()
     );
 
     public RrpSerde getSerde(RrpCommands command) {
