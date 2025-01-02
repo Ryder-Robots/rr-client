@@ -1,9 +1,14 @@
 package org.ryderrobot.drones;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import org.ryderrobot.models.controllers.ControllerRequest;
 import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
 import org.ryderrobot.models.protocols.rrp.MspStatus;
+import org.ryderrobot.models.protocols.rrp.RrpEvent;
 import org.ryderrobot.net.SocketClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Interface for drone.
@@ -99,4 +104,23 @@ public interface Drone extends Runnable {
      * @param value true if program is not running.
      */
     void setIsRunning(boolean value);
+
+    /**
+     * For manual flight details in manual flight screen such as actors for camera etc, they will be called
+     * during each render from here.
+     *
+     * @return list of actors.
+     */
+    default List<Actor> getScreenActors() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * Overload method to handle colmmands.
+     *
+     * @param event current event
+     */
+    default void handleEvent(RrpEvent event) {
+        System.out.println("ignoring command:" + event.getCommand());
+    }
 }

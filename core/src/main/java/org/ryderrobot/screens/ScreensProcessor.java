@@ -31,7 +31,7 @@ public class ScreensProcessor {
         this.drone = drone;
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this));
-        screens.add(new ManualFlightScreen());
+        screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new DroneDetailsScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new StatusScreen(viewPort, backgroundText, camera, skin, this));
     }
