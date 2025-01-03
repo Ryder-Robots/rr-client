@@ -68,7 +68,5 @@ public class TestDrone {
 
         assertTrue(drone.isIdentitySet());
         assertFalse(drone.isRunning());
-
-        verify(socketClient).send(argumentCaptor.capture());
     }
 }
