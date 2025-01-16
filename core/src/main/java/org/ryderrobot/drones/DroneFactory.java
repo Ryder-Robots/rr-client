@@ -24,7 +24,7 @@ public class DroneFactory {
                 drone = new DroneSdkLd001();
                 break;
             case SKULD002:
-                drone = new VirtualDrone();
+                drone = new DroneSdkLd001();
                 break;
             default:
                 drone = new VirtualDrone();
