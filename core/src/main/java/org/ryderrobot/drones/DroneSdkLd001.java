@@ -32,14 +32,21 @@ public class DroneSdkLd001 extends AbstractDrone{
             return;
         }
 
-        float yaw = handler.getAxisXL();
-        float throttle = (handler.getAxisYL() < 0) ? handler.getAxisYL() * -1: handler.getAxisYL();
+        float pitch = trimOffset(handler.getAxisYR()), yaw = trimOffset(handler.getAxisXR()),
+            roll = trimOffset(handler.getAxisXL());
+        int throttle = (handler.getAxisYL() < 0)?
+            Math.round(trimOffset(handler.getAxisYL()) * -1000)
+            :0;
 
-        if (throttle  > 0 && throttle < 0.05) {
-            throttle = 0;
-        }
-        Msp104MotorPayload payload = new Msp104MotorPayload(0, 0, yaw, throttle);
+        Msp104MotorPayload payload = new Msp104MotorPayload(roll, pitch, yaw, throttle);
         RrpEvent<Msp104MotorPayload> event = new RrpEvent<>(RrpCommands.MSP_MOTOR, payload);
         getSocketClient().send(event);
+    }
+
+    /*
+     * Performs minor calibration to stop inputs from throwing unwanted micro-flight adjustments.
+     */
+    private float trimOffset(float input) {
+        return (Math.abs(input) < 0.05) ? 0 : input;
     }
 }
