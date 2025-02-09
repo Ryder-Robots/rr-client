@@ -9,6 +9,7 @@ public class SerdeFactory {
 
     private final Map<RrpCommands, RrpSerde> serdes = Map.of(
         RrpCommands.MSP_SET_MOTOR_HBRIDGE, new MspHbridgeSerde(),
+        RrpCommands.MSP_MOTOR, new MspMotorSerde(),
         RrpCommands.MSP_ERROR, new MspErrorSerde(),
         RrpCommands.MSP_IDENT, new MspIdentSerde(),
         RrpCommands.MSP_STATUS, new MspStatusSerde(),
