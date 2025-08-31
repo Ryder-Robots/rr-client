@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.constants.Constants;
+import org.ryderrobot.exceptions.RrpInterruptException;
+import org.ryderrobot.exceptions.TimeOutException;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
@@ -38,12 +40,15 @@ public class MainMenuScreen extends Stage implements Screen {
 
     // Maps actions to the menu items above.
     final ClickListener[] menuItemsListener = {
+        // connect
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 screensProcessor.setCurrScreen(ScreensProcessor.SCR_CONNECT);
             }
-        }, // connect
+        },
+
+        // Control
         new ClickListener(){
 
             @Override
@@ -59,7 +64,7 @@ public class MainMenuScreen extends Stage implements Screen {
             }
         },
 
-        // Control
+        // Drone Details
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -75,7 +80,7 @@ public class MainMenuScreen extends Stage implements Screen {
 
         },
 
-        // Display drone details
+        // Status
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -88,23 +93,40 @@ public class MainMenuScreen extends Stage implements Screen {
                     dialog.show(stage);
                 }
             }
-
         },
 
-        // Display status
+        // Disconnect
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screensProcessor.getDrone().dispose();
+                try {
+                    screensProcessor.getDrone().dispose();
+                } catch (TimeOutException | RrpInterruptException ex) {
+                    final Dialog dialog = new Dialog("ERROR", skin);
+                    dialog.text(ex.getMessage());
+                    dialog.button("Ok", false);
+                    dialog.show(stage);
+                }
             }
         },
+
+        // Exit
         new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                screensProcessor.getDrone().dispose();
+                try {
+                    screensProcessor.getDrone().dispose();
+                } catch (TimeOutException | RrpInterruptException ex) {
+                    final Dialog dialog = new Dialog("ERROR", skin);
+                    dialog.text(ex.getMessage());
+                    dialog.button("Ok", false);
+                    dialog.show(stage);
+                }
+
+                // could check for disconnection before
                 Gdx.app.exit();
             }
-        }, // Exit
+        },
     };
 
     private final Skin skin;

@@ -1,5 +1,10 @@
 package org.ryderrobot.drones;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Timer;
+import org.ryderrobot.constants.Constants;
+import org.ryderrobot.exceptions.RrpInterruptException;
+import org.ryderrobot.exceptions.TimeOutException;
 import org.ryderrobot.models.protocols.rrp.*;
 import org.ryderrobot.net.SocketClient;
 
@@ -24,10 +29,26 @@ public abstract class AbstractDrone implements Drone {
 
     @Override
     public void dispose() {
-        if (isConnected()) {
-            socketClient.close();
-            setIsRunning(false);
-            setIdent(new MspIdentPayload(0, NONE, VIRTUAL, 0));
+        boolean connected = isConnected();
+        float timeout = Constants.TIMEOUT + Gdx.graphics.getDeltaTime();
+        try {
+            while (connected) {
+                socketClient.close();
+                setIsRunning(false);
+                setIdent(new MspIdentPayload(0, NONE, VIRTUAL, 0));
+                connected = isConnected();
+
+                if (connected) {
+                    Thread.sleep(1000);
+                    timeout--;
+
+                    if (timeout < 0) {
+                        throw new TimeOutException("attempted to disconnect failed due to timeout");
+                    }
+                }
+            }
+        } catch (InterruptedException ex) {
+            throw new RrpInterruptException(ex);
         }
     }
 
