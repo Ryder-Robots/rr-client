@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.constants.Constants;
-import org.ryderrobot.drones.Drone;
 
 import static java.lang.Math.round;
 import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
@@ -30,7 +29,7 @@ public class MainMenuScreen extends Stage implements Screen {
 
     final String[] menuItems = {
         "Connect",
-        "Manual Fly (Data Collection)",
+        "Manual Control",
         "Drone Details",
         "Drone Status",
         "Disconnect",
@@ -58,7 +57,9 @@ public class MainMenuScreen extends Stage implements Screen {
                     dialog.show(stage);
                 }
             }
-        }, // Manual Fly (Data Collection)
+        },
+
+        // Control
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -72,8 +73,9 @@ public class MainMenuScreen extends Stage implements Screen {
                 }
             }
 
-        }, // Display drone details
+        },
 
+        // Display drone details
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -87,8 +89,9 @@ public class MainMenuScreen extends Stage implements Screen {
                 }
             }
 
-        }, // Display status
+        },
 
+        // Display status
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
