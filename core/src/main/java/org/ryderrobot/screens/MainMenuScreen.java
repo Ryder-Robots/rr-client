@@ -34,6 +34,7 @@ public class MainMenuScreen extends Stage implements Screen {
         "Manual Control",
         "Drone Details",
         "Drone Status",
+        "Client Status",
         "Disconnect",
         "Exit",
     };
@@ -80,7 +81,7 @@ public class MainMenuScreen extends Stage implements Screen {
 
         },
 
-        // Status
+        // Drone Status
         new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -92,6 +93,14 @@ public class MainMenuScreen extends Stage implements Screen {
                     dialog.button("Ok", false);
                     dialog.show(stage);
                 }
+            }
+        },
+
+        // Client Status (show details about the current hardware).
+        new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                screensProcessor.setCurrScreen(ScreensProcessor.SCR_CLIENT);
             }
         },
 

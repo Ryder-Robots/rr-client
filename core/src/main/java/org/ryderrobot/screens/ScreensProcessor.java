@@ -22,6 +22,7 @@ public class ScreensProcessor {
     public static int SCR_MAN_FLIGHT = 2;
     public static int SCR_IDENT = 3;
     public static int SCR_STATUS = 4;
+    public static int SCR_CLIENT = 5;
 
     public ScreensProcessor(
         Texture backgroundText,
@@ -38,6 +39,7 @@ public class ScreensProcessor {
         screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new DroneDetailsScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new StatusScreen(viewPort, backgroundText, camera, skin, this));
+        screens.add(new ClientScreen(viewPort, backgroundText, camera, skin, this));
     }
 
     public void setCurrScreen(int screen) {
