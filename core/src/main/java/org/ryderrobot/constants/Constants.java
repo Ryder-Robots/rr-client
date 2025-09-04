@@ -1,5 +1,7 @@
 package org.ryderrobot.constants;
 
+import com.badlogic.gdx.Gdx;
+
 public class Constants {
 
     static public int TIMEOUT = 100;
@@ -10,12 +12,12 @@ public class Constants {
 
     public static final String UI_SKIN_ATLAS = "x2/uiskin.atlas";
     public static final String UI_SKIN = "x2/uiskin.json";
-    public static final float WORLD_HEIGHT = 1024;
-    public static final float WORLD_WIDTH = 1366;
+    public static final float WORLD_HEIGHT = Gdx.graphics.getBackBufferHeight();
+    public static final float WORLD_WIDTH = Gdx.graphics.getBackBufferWidth();
 
     // UI Objects
-    public static final int ROW_HEIGHT = 60;
-    public static final int ROW_WIDTH = 300;
+    public static final int ROW_HEIGHT = Gdx.graphics.getBackBufferHeight() / 17; // 17th of height
+    public static final int ROW_WIDTH = (int) Math.round(Gdx.graphics.getBackBufferWidth() / 4.55); // 4.5
 
     // Queues
     public static int MAX_QUEUE_COUNT = 100;

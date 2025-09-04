@@ -24,8 +24,6 @@ import static org.ryderrobot.models.protocols.rrp.MultiType.NONE;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private Texture backgroundText;
-    private Viewport viewPort;
-    private OrthographicCamera camera;
     private final Drone drone = new VirtualDrone();
     private ScreensProcessor screensProcessor;
     private final SocketClient socketClient = new TcpSocketClient();
@@ -37,9 +35,9 @@ public class Main extends ApplicationAdapter {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN_ATLAS));
         Skin skin = new Skin( Gdx.files.internal(Constants.UI_SKIN), atlas);
         DisplayHandler displayHandler = new GenericDisplayHandler();
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
         camera.setToOrtho(false, displayHandler.worldWidth(), displayHandler.worldHeight());
-        viewPort = new FitViewport(displayHandler.worldWidth(), displayHandler.worldHeight(), camera);
+        Viewport viewPort = new FitViewport(displayHandler.worldWidth(), displayHandler.worldHeight(), camera);
         viewPort.apply();
         backgroundText = new Texture("background.png");
         screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone, displayHandler);
