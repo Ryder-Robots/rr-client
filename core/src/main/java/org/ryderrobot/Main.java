@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.constants.Constants;
+import org.ryderrobot.display.DisplayHandler;
+import org.ryderrobot.display.GenericDisplayHandler;
 import org.ryderrobot.drones.Drone;
 import org.ryderrobot.drones.VirtualDrone;
 import org.ryderrobot.models.protocols.rrp.MspIdentPayload;
@@ -24,9 +26,9 @@ public class Main extends ApplicationAdapter {
     private Texture backgroundText;
     private Viewport viewPort;
     private OrthographicCamera camera;
-    private Drone drone = new VirtualDrone();
+    private final Drone drone = new VirtualDrone();
     private ScreensProcessor screensProcessor;
-    private SocketClient socketClient = new TcpSocketClient();
+    private final SocketClient socketClient = new TcpSocketClient();
 
     @Override
     public void create() {
@@ -34,12 +36,13 @@ public class Main extends ApplicationAdapter {
         drone.setIdent(new MspIdentPayload(0, NONE, VIRTUAL, 0));
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(Constants.UI_SKIN_ATLAS));
         Skin skin = new Skin( Gdx.files.internal(Constants.UI_SKIN), atlas);
+        DisplayHandler displayHandler = new GenericDisplayHandler();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
-        viewPort = new FitViewport(Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT, camera);
+        camera.setToOrtho(false, displayHandler.worldWidth(), displayHandler.worldHeight());
+        viewPort = new FitViewport(displayHandler.worldWidth(), displayHandler.worldHeight(), camera);
         viewPort.apply();
         backgroundText = new Texture("background.png");
-        screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone);
+        screensProcessor = new ScreensProcessor(backgroundText, viewPort, camera, skin, drone, displayHandler);
         screensProcessor.get().show();
     }
 

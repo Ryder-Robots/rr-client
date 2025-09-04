@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.ryderrobot.display.DisplayHandler;
 import org.ryderrobot.drones.Drone;
 
 public class ScreensProcessor {
@@ -14,6 +15,7 @@ public class ScreensProcessor {
     private boolean changed = false;
     private final Array<Screen> screens = new Array<>(true, 2);
     private Drone drone;
+    private DisplayHandler displayHandler;
 
     public static int SCR_MM = 0;
     public static int SCR_CONNECT = 1;
@@ -26,9 +28,11 @@ public class ScreensProcessor {
         Viewport viewPort,
         OrthographicCamera camera,
         Skin skin,
-        Drone drone) {
+        Drone drone,
+        DisplayHandler displayHandler) {
 
         this.drone = drone;
+        this.displayHandler = displayHandler;
         screens.add(new MainMenuScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new ConnectRobotScreen(viewPort, backgroundText, camera, skin, this));
         screens.add(new ManualFlightScreen(viewPort, backgroundText, camera, skin, this));
@@ -66,5 +70,9 @@ public class ScreensProcessor {
 
     public void setDrone(Drone drone) {
         this.drone = drone;
+    }
+
+    public DisplayHandler displayHandler() {
+        return displayHandler;
     }
 }

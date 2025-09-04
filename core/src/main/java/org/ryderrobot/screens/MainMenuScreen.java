@@ -154,7 +154,10 @@ public class MainMenuScreen extends Stage implements Screen {
             TextButton button = new TextButton(menuItems[i], skin);
             button.addListener(menuItemsListener[i]);
 
-            mainTable.add(button).width(round(ROW_WIDTH * 1.5)).height(ROW_HEIGHT).pad(10);
+//            mainTable.add(button).width(round(ROW_WIDTH * 1.5)).height(ROW_HEIGHT).pad(10);
+            mainTable.add(button).width(round(screensProcessor.displayHandler().rowWidth() * 1.5))
+                .height(screensProcessor.displayHandler().rowHeight()).pad(10);
+
             mainTable.row();
             buttons[i] = button;
         }
@@ -164,9 +167,14 @@ public class MainMenuScreen extends Stage implements Screen {
 
     @Override
     public void render(float v) {
+        // for each render
+
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         getBatch().begin();
-        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        getBatch().draw(backgroundTexture, 0, 0,
+            screensProcessor.displayHandler().worldWidth(),
+            screensProcessor.displayHandler().worldHeight());
+//        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
         getBatch().end();
 
         camera.update();
