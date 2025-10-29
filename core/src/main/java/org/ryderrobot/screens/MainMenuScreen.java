@@ -14,13 +14,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.ryderrobot.constants.Constants;
 import org.ryderrobot.exceptions.RrpInterruptException;
 import org.ryderrobot.exceptions.TimeOutException;
 
 import static java.lang.Math.round;
-import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
-import static org.ryderrobot.constants.Constants.ROW_WIDTH;
 
 public class MainMenuScreen extends Stage implements Screen {
     private final Viewport viewPort;

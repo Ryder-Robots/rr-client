@@ -13,9 +13,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.ryderrobot.display.DisplayHandler;
 
-import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
-import static org.ryderrobot.constants.Constants.ROW_WIDTH;
-
 public class ClientScreen extends Stage implements Screen  {
     private final Viewport viewPort;
     private final Texture backgroundTexture;
@@ -74,6 +71,12 @@ public class ClientScreen extends Stage implements Screen  {
         ).width(d.rowWidth()).height(d.rowHeight()).left();
         mainTable.row();
 
+        mainTable.add(new Label("os: ", skin)).right().width(d.rowWidth()).height(d.rowHeight()).pad(10);
+        mainTable.add(
+            new TextField(System.getProperty("os.name").toLowerCase(), skin)
+        ).width(d.rowWidth()).height(d.rowHeight()).left();
+        mainTable.row();
+
         final TextButton back = new TextButton("Back", skin);
         back.addListener(new ClickListener() {
             @Override
@@ -83,7 +86,7 @@ public class ClientScreen extends Stage implements Screen  {
         });
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
-        buttonTable.setY(-200);
+        buttonTable.setY(-300);
         buttonTable.add(back).width(d.rowWidth()).height(d.rowHeight());
 
         addActor(mainTable);

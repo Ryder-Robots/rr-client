@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.common.Strings;
-import org.ryderrobot.constants.Constants;
+import org.ryderrobot.display.DisplayHandler;
 import org.ryderrobot.drones.Drone;
 import com.badlogic.gdx.Gdx;
 import org.ryderrobot.drones.DroneFactory;
@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.Math.round;
-import static org.ryderrobot.constants.Constants.*;
+import static org.ryderrobot.constants.Constants.CONNECTION_DETAILS_FL;
 
 public class ConnectRobotScreen extends Stage implements Screen  {
     private final Viewport viewPort;
@@ -136,23 +136,23 @@ public class ConnectRobotScreen extends Stage implements Screen  {
                 screensProcessor.setCurrScreen(ScreensProcessor.SCR_MM);
             }
         });
-
+        final DisplayHandler d = screensProcessor.displayHandler();
         final Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
-        mainTable.add(new Label("IP or CNAME: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(new Label("IP or CNAME: ", skin)).right().width(d.rowWidth()).height(d.rowHeight()).pad(10);
         mainTable.row();
-        mainTable.add(addrTextField).width(ROW_WIDTH).height(ROW_HEIGHT).left();
-        mainTable.add(portTxtField).height(ROW_HEIGHT).width(round((float) ROW_WIDTH / 3)).pad(10);
+        mainTable.add(addrTextField).width(d.rowWidth()).height(d.rowHeight()).left();
+        mainTable.add(portTxtField).height(d.rowWidth()).width(round((float) d.rowHeight() / 3)).pad(10);
         mainTable.row();
         mainTable.row();
-        mainTable.add(status).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(status).right().width(d.rowWidth()).height(d.rowHeight()).pad(10);
 
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.setY(-200);
-        buttonTable.add(connect).width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
-        buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
+        buttonTable.add(connect).width(d.rowWidth()).height(d.rowHeight()).pad(10);
+        buttonTable.add(back).width(d.rowWidth()).height(d.rowHeight());
 
         addActor(mainTable);
         addActor(buttonTable);
@@ -161,9 +161,10 @@ public class ConnectRobotScreen extends Stage implements Screen  {
 
     @Override
     public void render(float v) {
+        final DisplayHandler d = screensProcessor.displayHandler();;
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         getBatch().begin();
-        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        getBatch().draw(backgroundTexture, 0, 0, d.worldWidth(), d.worldHeight());
         getBatch().end();
 
         camera.update();

@@ -11,10 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.ryderrobot.constants.Constants;
-
-import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
-import static org.ryderrobot.constants.Constants.ROW_WIDTH;
+import org.ryderrobot.display.DisplayHandler;
 
 public class DroneDetailsScreen  extends Stage implements Screen {
     private final Viewport viewPort;
@@ -37,29 +34,30 @@ public class DroneDetailsScreen  extends Stage implements Screen {
 
     @Override
     public void show() {
+        final DisplayHandler d = screensProcessor.displayHandler();
         final Table mainTable = new Table();
         mainTable.setFillParent(true);
         mainTable.center();
-        mainTable.add(new Label("version: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(new Label("version: ", skin)).right().width(d.rowWidth()).height(d.rowHeight()).pad(10);
         mainTable.add( new TextField(
             String.valueOf(screensProcessor.getDrone().getIdentity().getVersion()), skin)
-        ).width(ROW_WIDTH).height(ROW_HEIGHT).left();
+        ).width(d.rowWidth()).height(d.rowHeight()).left();
         mainTable.row();
 
-        mainTable.add(new Label("multitype: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(new Label("multitype: ", skin)).right().width(d.rowWidth()).height(d.rowHeight()).pad(10);
         mainTable.add(new TextField(screensProcessor.getDrone().getIdentity().getMultitype().name(), skin))
-            .width(ROW_WIDTH).height(ROW_HEIGHT).left();
+            .width(d.rowWidth()).height(d.rowHeight()).left();
         mainTable.row();
 
-        mainTable.add(new Label("mspversion: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(new Label("mspversion: ", skin)).right().width(d.worldWidth()).height(d.rowHeight()).pad(10);
         mainTable.add(new TextField(screensProcessor.getDrone().getIdentity().getMspversion().name(), skin))
-            .width(ROW_WIDTH).height(ROW_HEIGHT).left();
+            .width(d.worldWidth()).height(d.rowHeight()).left();
         mainTable.row();
 
-        mainTable.add(new Label("capability: ", skin)).right().width(ROW_WIDTH).height(ROW_HEIGHT).pad(10);
+        mainTable.add(new Label("capability: ", skin)).right().width(d.worldWidth()).height(d.rowHeight()).pad(10);
         mainTable.add(
             new TextField(String.valueOf(screensProcessor.getDrone().getIdentity().getCapability()), skin)
-        ).width(ROW_WIDTH).height(ROW_HEIGHT).left();
+        ).width(d.worldWidth()).height(d.rowHeight()).left();
         mainTable.row();
 
         final TextButton back = new TextButton("Back", skin);
@@ -72,7 +70,7 @@ public class DroneDetailsScreen  extends Stage implements Screen {
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.setY(-200);
-        buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
+        buttonTable.add(back).width(d.worldWidth()).height(d.rowHeight());
 
         addActor(mainTable);
         addActor(buttonTable);
@@ -81,9 +79,10 @@ public class DroneDetailsScreen  extends Stage implements Screen {
 
     @Override
     public void render(float v) {
+        final DisplayHandler d = screensProcessor.displayHandler();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         getBatch().begin();
-        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        getBatch().draw(backgroundTexture, 0, 0, d.worldWidth(), d.worldHeight());
         getBatch().end();
 
         camera.update();

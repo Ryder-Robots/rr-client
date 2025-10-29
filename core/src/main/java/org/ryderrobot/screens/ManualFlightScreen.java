@@ -16,12 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.ryderrobot.constants.Constants;
 import org.ryderrobot.listeners.RrControllerListener;
 import org.ryderrobot.listeners.RrControllerListenerImpl;
-
-import static org.ryderrobot.constants.Constants.ROW_HEIGHT;
-import static org.ryderrobot.constants.Constants.ROW_WIDTH;
 
 public class ManualFlightScreen  extends Stage implements Screen {
     private final Viewport viewPort;
@@ -57,7 +53,8 @@ public class ManualFlightScreen  extends Stage implements Screen {
         final Table buttonTable = new Table();
         buttonTable.setFillParent(true);
         buttonTable.setY(-300);
-        buttonTable.add(back).width(ROW_WIDTH).height(ROW_HEIGHT);
+        buttonTable.add(back).width(screensProcessor.displayHandler().worldWidth())
+            .height(screensProcessor.displayHandler().rowHeight());
 
         addActor(buttonTable);
         Gdx.input.setInputProcessor(this);
@@ -67,7 +64,9 @@ public class ManualFlightScreen  extends Stage implements Screen {
     public void render(float v) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         getBatch().begin();
-        getBatch().draw(backgroundTexture, 0, 0, Constants.WORLD_WIDTH, Constants.WORLD_HEIGHT);
+        getBatch().draw(backgroundTexture, 0, 0,
+            screensProcessor.displayHandler().worldWidth(),
+            screensProcessor.displayHandler().worldHeight());
         getBatch().end();
 
         if (listener.isRequest()) {
